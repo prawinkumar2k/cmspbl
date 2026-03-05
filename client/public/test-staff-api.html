@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test - Staff Master</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-left: 4px solid #4CAF50;
+            white-space: pre-wrap;
+            font-family: monospace;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .error {
+            border-left-color: #f44336;
+            background: #ffebee;
+        }
+        .success {
+            border-left-color: #4CAF50;
+            background: #e8f5e9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Staff Master API Test</h1>
+        <p>Test the <code>/api/staff_master</code> endpoint</p>
+        
+        <button onclick="testAPI()">Test API (No Auth)</button>
+        <button onclick="testAPIWithAuth()">Test API (With Auth)</button>
+        <button onclick="clearResult()">Clear</button>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api/staff_master';
+        const resultDiv = document.getElementById('result');
+
+        function clearResult() {
+            resultDiv.innerHTML = '';
+            resultDiv.className = '';
+        }
+
+        async function testAPI() {
+            clearResult();
+            resultDiv.innerHTML = '⏳ Testing API without authentication...\\n';
+
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
+
+                if (response.ok) {
+                    resultDiv.className = 'success';
+                    resultDiv.innerHTML = `✅ SUCCESS!\\n\\n`;
+                    resultDiv.innerHTML += `Status: ${response.status} ${response.statusText}\\n`;
+                    resultDiv.innerHTML += `Records: ${Array.isArray(data) ? data.length : 'Not an array'}\\n\\n`;
+                    resultDiv.innerHTML += `First 3 records:\\n`;
+                    resultDiv.innerHTML += JSON.stringify(data.slice(0, 3), null, 2);
+                } else {
+                    resultDiv.className = 'error';
+                    resultDiv.innerHTML = `❌ ERROR!\\n\\n`;
+                    resultDiv.innerHTML += `Status: ${response.status} ${response.statusText}\\n`;
+                    resultDiv.innerHTML += `Response:\\n${JSON.stringify(data, null, 2)}`;
+                }
+            } catch (error) {
+                resultDiv.className = 'error';
+                resultDiv.innerHTML = `❌ FETCH ERROR!\\n\\n`;
+                resultDiv.innerHTML += `Error: ${error.message}\\n`;
+                resultDiv.innerHTML += `\\nMake sure the server is running on port 5000`;
+            }
+        }
+
+        async function testAPIWithAuth() {
+            clearResult();
+            resultDiv.innerHTML = '⏳ Testing API with authentication...\\n';
+
+            const token = localStorage.getItem('token');
+            if (!token) {
+                resultDiv.className = 'error';
+                resultDiv.innerHTML = '❌ No token found in localStorage!\\n\\nPlease login first.';
+                return;
+            }
+
+            try {
+                const response = await fetch(API_URL, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    resultDiv.className = 'success';
+                    resultDiv.innerHTML = `✅ SUCCESS!\\n\\n`;
+                    resultDiv.innerHTML += `Status: ${response.status} ${response.statusText}\\n`;
+                    resultDiv.innerHTML += `Records: ${Array.isArray(data) ? data.length : 'Not an array'}\\n\\n`;
+                    resultDiv.innerHTML += `First 3 records:\\n`;
+                    resultDiv.innerHTML += JSON.stringify(data.slice(0, 3), null, 2);
+                } else {
+                    resultDiv.className = 'error';
+                    resultDiv.innerHTML = `❌ ERROR!\\n\\n`;
+                    resultDiv.innerHTML += `Status: ${response.status} ${response.statusText}\\n`;
+                    resultDiv.innerHTML += `Response:\\n${JSON.stringify(data, null, 2)}`;
+                }
+            } catch (error) {
+                resultDiv.className = 'error';
+                resultDiv.innerHTML = `❌ FETCH ERROR!\\n\\n`;
+                resultDiv.innerHTML += `Error: ${error.message}\\n`;
+                resultDiv.innerHTML += `\\nMake sure the server is running on port 5000`;
+            }
+        }
+
+        // Auto-test on load
+        window.addEventListener('load', () => {
+            setTimeout(testAPI, 500);
+        });
+    </script>
+</body>
+</html>

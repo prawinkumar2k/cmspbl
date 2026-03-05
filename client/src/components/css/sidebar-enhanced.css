@@ -1,0 +1,857 @@
+/* === COMPLETE SIDEBAR CSS - CONSOLIDATED FROM style.css === */
+/* Enhanced Sidebar Styling with Modern SaaS Design */
+
+/* Main Sidebar */
+.sidebar {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline-start: -100%;
+  width: 15.625rem;
+  height: 100vh;
+  background: linear-gradient(180deg, #f8f9fa 0%, #f5f6f8 100%);
+  transition: all 0.3s;
+  z-index: 3;
+}
+
+@media (min-width: 1200px) {
+  .sidebar {
+    inset-inline-start: 0;
+    width: 13.75rem;
+  }
+}
+
+@media (min-width: 1400px) {
+  .sidebar {
+    width: 17.1875rem;
+  }
+}
+
+@media (min-width: 1650px) {
+  .sidebar {
+    width: 19.5rem;
+  }
+}
+
+/* Sidebar Menu Items Styling */
+.sidebar-menu {
+  padding: 1rem 0.5rem;
+}
+
+.sidebar-menu li {
+  margin: 0.25rem 0;
+  list-style: none;
+}
+
+/* Link Items */
+.sidebar-menu li a,
+.sidebar-menu li>Link {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 0.75rem;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+  gap: 0.75rem;
+  position: relative;
+}
+
+.sidebar-menu li a:hover,
+.sidebar-menu li>Link:hover {
+  background: rgba(102, 126, 234, 0.08);
+  color: #667eea;
+  transform: translateX(4px);
+}
+
+/* Menu Icon Base Styling */
+.sidebar-menu .menu-icon {
+  font-size: 1.25rem;
+  color: #667eea;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+/* Dropdown Toggle */
+.sidebar-menu .dropdown-toggle {
+  cursor: pointer;
+  text-decoration: none;
+  width: 100%;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.sidebar-menu .dropdown-toggle::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, currentColor 0%, currentColor 100%);
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-menu .dropdown-toggle:hover {
+  background: rgba(102, 126, 234, 0.08);
+  transform: translateX(2px);
+}
+
+.sidebar-menu .dropdown-toggle:hover::before {
+  opacity: 1;
+}
+
+/* Main Dropdown Item Styling */
+.main-dropdown-item {
+  position: relative;
+}
+
+/* Active state with gradient left indicator */
+.dropdown.active .main-dropdown-item {
+  border-radius: 14px;
+}
+
+.dropdown.active .main-dropdown-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 3px;
+  background: var(--gradient-color, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
+  border-radius: 3px 0 0 3px;
+  opacity: 1;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.main-dropdown-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+  border-radius: 14px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.main-dropdown-item:hover::after {
+  opacity: 0.5;
+}
+
+.sidebar-menu .dropdown-toggle .dropdown-arrow {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease;
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.sidebar-menu .dropdown-toggle .dropdown-arrow.rotate {
+  transform: rotate(-180deg);
+}
+
+/* Submenu Styling */
+.sidebar-submenu {
+  padding: 0.5rem 0;
+  overflow: hidden;
+  transition: height 0.3s ease;
+  background: transparent;
+}
+
+.sidebar-submenu li {
+  margin: 0.25rem 0;
+  list-style: none;
+}
+
+/* Submenu Item with Icon Box */
+.sidebar-submenu li a,
+.sidebar-submenu li>Link {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 0.5rem;
+  margin: 0.25rem 0.25rem;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+  gap: 0.75rem;
+  position: relative;
+}
+
+.sidebar-submenu li a:hover,
+.sidebar-submenu li>Link:hover {
+  transform: translateX(4px);
+}
+
+/* Submenu Item Icon Box - Enhanced with Glass Morphism */
+.submenu-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  flex-shrink: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.9rem;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+}
+
+.submenu-icon-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
+  border-radius: 14px;
+  pointer-events: none;
+}
+
+.submenu-icon-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+/* Icon Styles */
+.submenu-icon {
+  font-size: 1.2rem;
+  z-index: 1;
+  position: relative;
+}
+
+/* Icon Color Variations with Glass Morphism Gradients */
+.submenu-icon-wrapper.blue {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+}
+
+.submenu-icon-wrapper.green {
+  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+  box-shadow: 0 8px 32px rgba(72, 187, 120, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+}
+
+.submenu-icon-wrapper.orange {
+  background: linear-gradient(135deg, #ed8936 0%, #d69e2e 100%);
+  box-shadow: 0 8px 32px rgba(237, 137, 54, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+}
+
+.submenu-icon-wrapper.red {
+  background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+  box-shadow: 0 8px 32px rgba(245, 101, 101, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+}
+
+.submenu-icon-wrapper.purple {
+  background: linear-gradient(135deg, #9f7aea 0%, #805ad5 100%);
+  box-shadow: 0 8px 32px rgba(159, 122, 234, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+}
+
+.submenu-icon-wrapper.teal {
+  background: linear-gradient(135deg, #38b2ac 0%, #319795 100%);
+  box-shadow: 0 8px 32px rgba(56, 178, 172, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+}
+
+.submenu-icon-wrapper.cyan {
+  background: linear-gradient(135deg, #30cfd0 0%, #06b6d4 100%);
+  box-shadow: 0 8px 32px rgba(48, 207, 208, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+}
+
+.submenu-icon-wrapper.pink {
+  background: linear-gradient(135deg, #f687b3 0%, #ed64a6 100%);
+  box-shadow: 0 8px 32px rgba(246, 135, 179, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Hover Scale Effect on Icon Box - Enhanced */
+.sidebar-submenu li a:hover .submenu-icon-wrapper,
+.sidebar-submenu li>Link:hover .submenu-icon-wrapper {
+  transform: scale(1.15);
+  box-shadow: 0 12px 40px rgba(102, 126, 234, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.6);
+}
+
+.sidebar-submenu-link:hover .submenu-icon-wrapper {
+  transform: scale(1.15);
+  box-shadow: 0 12px 40px rgba(102, 126, 234, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.6);
+}
+
+.sidebar-submenu-link:hover .submenu-icon-wrapper::after {
+  opacity: 1;
+}
+
+/* Sidebar Close Button */
+.sidebar-close-btn {
+  position: absolute;
+  top: 0.625rem;
+  inset-inline-end: 0.625rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 1px solid var(--input-form-light, #e5e7eb);
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (min-width: 1200px) {
+  .sidebar-close-btn {
+    display: none;
+  }
+}
+
+/* Sidebar States */
+.sidebar.sidebar-open {
+  inset-inline-start: 0;
+}
+
+.sidebar.active {
+  width: auto;
+}
+
+@media (min-width: 1200px) {
+  .sidebar.active:hover {
+    inset-inline-start: 0;
+  }
+}
+
+@media (min-width: 1400px) {
+  .sidebar.active:hover {
+    width: 17.1875rem;
+  }
+}
+
+@media (min-width: 1650px) {
+  .sidebar.active:hover {
+    width: 19.5rem;
+  }
+}
+
+.sidebar.active:hover .sidebar-logo img.light-logo {
+  display: inline-block;
+}
+
+.sidebar.active:hover .sidebar-logo img.logo-icon {
+  display: none;
+}
+
+/* Show main menu item text on hover (but NOT submenu items - they show only if parent is open) */
+.sidebar.active:hover .sidebar-menu>li>a span,
+.sidebar.active:hover .sidebar-menu>li>Link span {
+  display: inline-block !important;
+}
+
+.sidebar.active:hover .sidebar-menu li a .menu-icon {
+  margin-inline-end: 0.5rem !important;
+}
+
+.sidebar.active:hover .sidebar-menu li.dropdown.dropdown-open .sidebar-submenu,
+.sidebar.active:hover .sidebar-menu li.dropdown.open .sidebar-submenu {
+  display: block !important;
+}
+
+/* Hide submenu items completely when sidebar is minimized and dropdown not opened */
+.sidebar.active .sidebar-menu .sidebar-submenu {
+  display: none !important;
+}
+
+.sidebar.active .sidebar-menu .sidebar-submenu li a span,
+.sidebar.active .sidebar-menu .sidebar-submenu li>Link span {
+  display: none !important;
+}
+
+.sidebar.active .sidebar-menu .sidebar-submenu li a .submenu-icon-wrapper,
+.sidebar.active .sidebar-menu .sidebar-submenu li>Link .submenu-icon-wrapper {
+  display: none !important;
+}
+
+/* Hide ALL submenu links/content when minimized */
+.sidebar.active .sidebar-menu .sidebar-submenu li a,
+.sidebar.active .sidebar-menu .sidebar-submenu li>Link {
+  visibility: hidden;
+  height: 0;
+  padding: 0;
+  margin: 0;
+  display: none !important;
+}
+
+/* Show submenu item text when submenu is visible on hover */
+.sidebar.active:hover .sidebar-menu li.dropdown.dropdown-open .sidebar-submenu li a span,
+.sidebar.active:hover .sidebar-menu li.dropdown.open .sidebar-submenu li a span,
+.sidebar.active:hover .sidebar-menu li.dropdown.dropdown-open .sidebar-submenu li>Link span,
+.sidebar.active:hover .sidebar-menu li.dropdown.open .sidebar-submenu li>Link span {
+  display: inline-block !important;
+  visibility: visible;
+}
+
+/* Show submenu item icon wrapper when submenu is visible on hover */
+.sidebar.active:hover .sidebar-menu li.dropdown.dropdown-open .sidebar-submenu li a .submenu-icon-wrapper,
+.sidebar.active:hover .sidebar-menu li.dropdown.open .sidebar-submenu li a .submenu-icon-wrapper,
+.sidebar.active:hover .sidebar-menu li.dropdown.dropdown-open .sidebar-submenu li>Link .submenu-icon-wrapper,
+.sidebar.active:hover .sidebar-menu li.dropdown.open .sidebar-submenu li>Link .submenu-icon-wrapper {
+  display: inline-flex !important;
+  visibility: visible;
+  margin-right: 0.5rem;
+}
+
+/* Make submenu links visible again when dropdown is open */
+.sidebar.active:hover .sidebar-menu li.dropdown.dropdown-open .sidebar-submenu li a,
+.sidebar.active:hover .sidebar-menu li.dropdown.open .sidebar-submenu li a,
+.sidebar.active:hover .sidebar-menu li.dropdown.dropdown-open .sidebar-submenu li>Link,
+.sidebar.active:hover .sidebar-menu li.dropdown.open .sidebar-submenu li>Link {
+  display: flex !important;
+  visibility: visible;
+  height: auto;
+  padding: 0.75rem 0.5rem;
+  margin: 0.25rem 0.25rem;
+}
+
+.sidebar.active:hover .sidebar-menu li.sidebar-menu-group-title {
+  display: inline-block;
+}
+
+.sidebar.active:hover .sidebar-menu li.dropdown a::after {
+  display: inline-block;
+}
+
+.sidebar.active .sidebar-logo img.light-logo,
+.sidebar.active .sidebar-logo img.dark-logo {
+  display: none;
+}
+
+/* sidebar minimize the logo size */
+.sidebar.active .sidebar-logo img.logo-icon {
+  display: inline-block;
+  width: 2.5rem;
+  height: 2.5rem;
+  object-fit: contain;
+}
+
+.sidebar.active .sidebar-menu li a span {
+  display: none;
+}
+
+.sidebar.active .sidebar-menu li a .menu-icon {
+  margin-inline-end: 0;
+}
+
+.sidebar.active .sidebar-menu li.sidebar-menu-group-title {
+  display: none;
+}
+
+.sidebar.active .sidebar-menu li.dropdown.dropdown-open .sidebar-submenu,
+.sidebar.active .sidebar-menu li.dropdown.open .sidebar-submenu {
+  display: none !important;
+}
+
+.sidebar.active .sidebar-menu li.dropdown a::after {
+  display: none;
+}
+
+/* Sidebar Logo */
+.sidebar-logo {
+  height: 4.7rem;
+  padding: 0.875rem 1rem;
+  border-inline-end: 1px solid var(--neutral-200, #e5e7eb);
+  border-block-end: 1px solid var(--neutral-200, #e5e7eb);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.sidebar-logo img {
+  max-height: 5rem;
+}
+
+/* .sidebar-logo img.dark-logo {
+  display: none;
+} */
+
+.sidebar-logo img.logo-icon {
+  display: none;
+}
+
+/* Sidebar Menu Area */
+.sidebar-menu-area {
+  height: calc(100vh - 72px);
+  padding: 0.75rem 1rem;
+  overflow-y: auto;
+}
+
+.sidebar-menu-area:hover::-webkit-scrollbar-thumb {
+  background-color: var(--neutral-200, #e5e7eb);
+}
+
+.sidebar-menu-area::-webkit-scrollbar {
+  width: 6px;
+  background-color: white;
+}
+
+.sidebar-menu-area::-webkit-scrollbar-thumb {
+  background-color: white;
+}
+
+/* Dark Theme Support */
+[data-theme=dark] .sidebar.active:hover .sidebar-logo img.light-logo {
+  display: none;
+}
+
+[data-theme=dark] .sidebar.active:hover .sidebar-logo img.dark-logo {
+  display: inline-block;
+}
+
+[data-theme=dark] .sidebar.active .sidebar-logo img.light-logo {
+  display: none;
+}
+
+[data-theme=dark] .sidebar-logo img.light-logo {
+  display: none;
+}
+
+[data-theme=dark] .sidebar-logo img.dark-logo {
+  display: inline-block;
+}
+
+/* Dropdown Arrow Animations */
+.sidebar-menu li.dropdown>a {
+  position: relative;
+}
+
+.sidebar-menu li.dropdown>a::after {
+  position: absolute;
+  content: "\ea6e";
+  font-family: remixicon;
+  font-style: normal;
+  inset-block-start: 50%;
+  inset-inline-end: 0.75rem;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  font-size: 1.125rem;
+  -webkit-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+@media (min-width: 1650px) {
+  .sidebar-menu li.dropdown>a::after {
+    font-size: 1.375rem;
+  }
+}
+
+.sidebar-menu li.dropdown.open>a,
+.sidebar-menu li.dropdown.dropdown-open>a {
+  background-color: var(--gradient-color, #667eea);
+  color: #fff;
+}
+
+.sidebar-menu li.dropdown.open>a:hover,
+.sidebar-menu li.dropdown.dropdown-open>a:hover {
+  color: #fff;
+}
+
+.sidebar-menu li.dropdown.open>a::after,
+.sidebar-menu li.dropdown.dropdown-open>a::after {
+  -webkit-transform: translateY(-50%) rotate(90deg);
+  -ms-transform: translateY(-50%) rotate(90deg);
+  transform: translateY(-50%) rotate(90deg);
+}
+
+.sidebar-menu li.dropdown.open .sidebar-submenu {
+  display: block;
+}
+
+.sidebar-menu li>a.active-page {
+  background-color: var(--gradient-color, #667eea);
+  color: #fff;
+}
+
+.sidebar-menu li>a.active-page:hover {
+  color: #fff;
+}
+
+.sidebar-menu li a {
+  padding: 0.625rem 0.75rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  color: var(--text-secondary-light, #333);
+  -webkit-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  border-radius: 8px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -o-border-radius: 8px;
+  font-size: 0.875rem;
+}
+
+@media (min-width: 1650px) {
+  .sidebar-menu li a {
+    font-size: 1rem;
+  }
+}
+
+.sidebar-menu li a:hover {
+  color: var(--gradient-color, #667eea);
+}
+
+.sidebar-menu li a .menu-icon {
+  font-size: 1.125rem;
+  margin-inline-end: 0.5rem;
+}
+
+@media (min-width: 1650px) {
+  .sidebar-menu li a .menu-icon {
+    font-size: 1.375rem;
+    margin-inline-end: 0.75rem;
+  }
+}
+
+.sidebar-menu li a i {
+  line-height: 1.2;
+  width: 24px;
+  margin-inline-end: 0.75rem;
+  font-size: 1.375rem;
+}
+
+.sidebar-menu li a .circle-icon {
+  font-size: 0.625rem;
+}
+
+.sidebar-menu .sidebar-submenu {
+  padding-block-start: 0.75rem;
+  display: none;
+  padding-inline-start: 1.5rem;
+  transition: none;
+}
+
+@media (min-width: 1650px) {
+  .sidebar-menu .sidebar-submenu {
+    padding-inline-start: 2.75rem;
+  }
+}
+
+.sidebar-menu .sidebar-submenu li.active-page a {
+  background-color: var(--bg-color, #f0f4ff);
+  color: var(--text-color, #333);
+}
+
+.sidebar-menu .sidebar-submenu li a {
+  padding: 0.4375rem 0.75rem;
+}
+
+.sidebar-menu .sidebar-menu-group-title {
+  color: var(--neutral-500, #999);
+  font-weight: 600;
+  margin-block: 0.5rem;
+  font-size: 0.875rem;
+}
+
+@media (min-width: 1650px) {
+  .sidebar-menu .sidebar-menu-group-title {
+    font-size: 1rem;
+  }
+}
+
+/* Dropdown Arrow Styles */
+.sidebar-menu li.dropdown>a.dropdown-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sidebar-menu li.dropdown>a.dropdown-toggle::after {
+  display: none !important;
+  content: none !important;
+}
+
+.dropdown-arrow {
+  font-size: 1rem;
+  transition: transform 0.3s ease;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.dropdown-arrow.rotate {
+  transform: rotate(180deg);
+}
+
+.sidebar.active .dropdown-arrow {
+  display: none;
+}
+
+.sidebar.active:hover .dropdown-arrow {
+  display: inline-block;
+}
+
+/* Submenu Icon Styles */
+.submenu-icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.5rem;
+}
+
+.submenu-icon {
+  font-size: 0.625rem;
+  line-height: 1;
+}
+
+.sidebar-menu .sidebar-submenu li a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Nested Dropdown Styles */
+.nested-dropdown {
+  position: relative;
+}
+
+.nested-dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+}
+
+.nested-dropdown-arrow {
+  font-size: 0.7rem;
+  transition: transform 0.3s ease;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.nested-dropdown-arrow.rotate {
+  transform: rotate(180deg);
+}
+
+.nested-submenu {
+  border-radius: 0.375rem;
+  margin-top: 0.25rem;
+  overflow: hidden;
+  transition: height 0.3s ease;
+}
+
+.nested-submenu li {
+  padding: 0;
+}
+
+.nested-submenu li a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.875rem;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+}
+
+.nested-submenu li a:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  padding-left: 1rem;
+}
+
+.nested-submenu-icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.25rem;
+}
+
+.nested-submenu-icon {
+  font-size: 0.5rem;
+  line-height: 1;
+}
+
+/* Bullet point styles for nested items */
+.bullet-point {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+}
+
+/* Active state for dropdown items - main menu */
+.sidebar-menu li.dropdown.active>.dropdown-toggle {
+  background-color: var(--gradient-color, #667eea);
+  color: white;
+}
+
+.nested-dropdown.active>.nested-dropdown-toggle .menu-icon {
+  color: var(--gradient-color, #667eea) !important;
+}
+
+/* Smooth transitions for all interactive elements */
+.sidebar-menu li>a,
+.sidebar-menu li>Link,
+.sidebar-submenu li>a,
+.sidebar-submenu li>Link,
+.nested-dropdown-toggle,
+.nested-submenu li>a,
+.nested-submenu li>Link {
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1199px) {
+
+  .sidebar-menu li a,
+  .sidebar-menu li>Link,
+  .sidebar-menu .dropdown-toggle {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .submenu-icon-wrapper {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+/* Collapsed Sidebar State */
+.sidebar.active .sidebar-menu li a span:last-child,
+.sidebar.active .sidebar-menu li>Link span:last-child {
+  display: none;
+}
+
+.sidebar.active .sidebar-submenu {
+  display: none !important;
+}
+
+.sidebar.active:hover .sidebar-submenu {
+  display: block !important;
+}
+
+/* === SIDEBAR CSS END === */

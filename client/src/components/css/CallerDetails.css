@@ -1,0 +1,264 @@
+/* =========================
+   SEARCH
+========================= */
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 12px 16px;
+  background: #ffffff;
+}
+
+.search-box svg {
+  color: #9ca3af;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+  color: #374151;
+  background: transparent;
+}
+
+.search-count {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.search-count span {
+  color: #2563eb;
+  font-weight: 700;
+}
+
+
+/* =========================
+   CAROUSEL CONTAINER
+   (Same width as search)
+========================= */
+.content-wrapper {
+  padding: 4px;
+}
+
+/* =========================
+   SLICK BASE CLEANUP
+========================= */
+.carousel-wrapper .slick-list {
+  overflow: hidden;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  /* shadow space */
+}
+
+.carousel-wrapper .slick-track {
+  display: flex !important;
+  gap: 16px;
+}
+
+.slick-slide {
+  height: auto !important;
+}
+
+.slick-slide>div {
+  height: 100%;
+}
+
+.slick-prev,
+.slick-next,
+.slick-dots {
+  display: none !important;
+}
+
+.slick-slider {
+  cursor: grab;
+}
+
+.slick-slider:active {
+  cursor: grabbing;
+}
+
+
+/* =========================
+   SLIDES
+========================= */
+.caller-slide {
+  padding: 0 6px;
+}
+
+
+/* =========================
+   CALLER CARD
+========================= */
+.caller-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: none;
+  transition: transform 0.35s ease;
+  height: 100%;
+}
+
+.caller-card:hover {
+  transform: translateY(-6px);
+  box-shadow: none;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+.caller-header h6 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.caller-header p {
+  font-size: 13px;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.gold-star {
+  color: #D4AF37;
+  /* premium gold */
+}
+
+
+/* =========================
+   PHONE
+========================= */
+.caller-phone {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 14px 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #2563eb;
+  border-top: 1px solid #d1d5db;
+  border-bottom: 1px solid #d1d5db;
+  padding: 10px 0;
+  text-decoration: none;
+}
+
+
+/* =========================
+   STATS
+========================= */
+.caller-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.caller-stat-box {
+  padding: 12px;
+  border-radius: 14px;
+}
+
+.caller-stat-box label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #4b5563;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.caller-stat-box strong {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+
+/* =========================
+   STAT COLORS
+========================= */
+.stat-box-blue {
+  background: #f0f9ff;
+  color: #2563eb;
+}
+
+.stat-box-green {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+.stat-box-purple {
+  background: #fdf4ff;
+  color: #9333ea;
+}
+
+
+/* =========================
+   CAROUSEL ARROWS
+   (INSIDE CARD – NO CUT)
+========================= */
+
+/* ===== Carousel Wrapper (NO BACKGROUND) ===== */
+.carousel-wrapper {
+  position: relative;
+  padding: 0;
+  background: transparent;
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  color: #2563eb;
+  font-size: 26px;
+  cursor: pointer;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.15);
+  transition: all 0.25s ease;
+}
+
+.carousel-arrow.left {
+  left: 0;
+}
+
+.carousel-arrow.right {
+  right: 0;
+}
+
+.carousel-arrow:hover {
+  background: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 14px 28px rgba(37, 99, 235, 0.35);
+}
+
+.carousel-arrow:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  .carousel-wrapper {
+    padding: 0;
+  }
+
+  .carousel-arrow {
+    display: none;
+  }
+}

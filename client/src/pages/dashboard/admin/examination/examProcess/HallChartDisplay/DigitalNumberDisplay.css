@@ -1,0 +1,77 @@
+/* ================= BASE ================= */
+
+.digital-number-display {
+  font-family: Arial, sans-serif;
+  background: #fff;
+  color: #000;
+}
+
+/* ================= PAGE ================= */
+
+.subject-section {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Page break after each subject */
+.page-break {
+  break-after: page;
+  page-break-after: always;
+}
+
+/* ================= PAPER SIZES ================= */
+
+.paper-PaperA4 {
+  width: 210mm;
+  margin: 0 auto;
+  padding: 12mm;
+}
+
+/* ================= PRINT OVERRIDES ================= */
+
+@media print {
+
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+
+  /* Hide entire app */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Show only digital numbering display */
+  .digital-number-display,
+  .digital-number-display * {
+    visibility: visible;
+  }
+
+  .digital-number-display {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  /* Set subject section to full A4 page */
+  .subject-section {
+    height: 297mm;
+    width: 100%;
+    page-break-after: always;
+    position: relative;
+  }
+
+  /* Remove dashboard layout */
+  footer,
+  nav,
+  aside {
+    display: none !important;
+  }
+
+  /* Force borders/backgrounds in Chrome */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

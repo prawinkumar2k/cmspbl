@@ -1,0 +1,33 @@
+# =============================================================================
+# Kustomization file for SF-ERP Kubernetes manifests
+# =============================================================================
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: sferp
+
+# Labels applied to all resources
+commonLabels:
+  app.kubernetes.io/managed-by: kustomize
+  app.kubernetes.io/part-of: sferp
+
+# Resources to include
+resources:
+  - namespace.yaml
+  - configmaps.yaml
+  - secrets.yaml
+  - pvc.yaml
+  - mysql-statefulset.yaml
+  - backend-deployment.yaml
+  - frontend-deployment.yaml
+  - hpa.yaml
+  - pdb.yaml
+  - ingress.yaml
+
+# Images to override (for CI/CD)
+images:
+  - name: sferp/backend
+    newTag: latest
+  - name: sferp/frontend
+    newTag: latest

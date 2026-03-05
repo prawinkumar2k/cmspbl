@@ -1,0 +1,7 @@
+.staff-form-title{ color: #6b4b3a; font-weight:700 }
+.staff-form-card{ background: var(--beige, #fbf7f2) }
+.btn-brown{ background:#8b5e3c; color:white; border-color:#8b5e3c }
+.btn-brown:hover{ background:#7a5132 }
+.staff-photo-box{ background: #fff7f2; border:1px dashed #d6c7b8; border-radius:6px }
+.photo-placeholder{ height:120px; display:flex; align-items:center; justify-content:center; color:#a08979; border:1px solid #f0e6de; background: #fff; margin-bottom:8px }
+.bg-beige{ background: #fbf7f2 }

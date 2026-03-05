@@ -1,0 +1,38 @@
+[
+  {
+    "Dept_Code": 4000,
+    "Dept_Name": "D.PHARM (DIPLOMA IN PHARMACY)",
+    "Course_Name": "Pharmacy",
+    "total_gq_seats": 250,
+    "total_mq_seats": 250,
+    "total_seats": 500,
+    "admitted_gq": 0,
+    "admitted_mq": 0,
+    "available_gq": 250,
+    "available_mq": 250
+  },
+  {
+    "Dept_Code": 5010,
+    "Dept_Name": "B.PHARM (BACHELOR OF PHARMACY)",
+    "Course_Name": "Pharmacy",
+    "total_gq_seats": 60,
+    "total_mq_seats": 60,
+    "total_seats": 120,
+    "admitted_gq": 96,
+    "admitted_mq": 12,
+    "available_gq": -36,
+    "available_mq": 48
+  },
+  {
+    "Dept_Code": 6101,
+    "Dept_Name": "M.PHARM (MASTER OF PHARMACY)",
+    "Course_Name": "Pharmacy",
+    "total_gq_seats": 30,
+    "total_mq_seats": 30,
+    "total_seats": 60,
+    "admitted_gq": 0,
+    "admitted_mq": 0,
+    "available_gq": 30,
+    "available_mq": 30
+  }
+]

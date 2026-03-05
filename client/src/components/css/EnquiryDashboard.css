@@ -1,0 +1,322 @@
+/* ===== Layout ===== */
+.dashboard-body {
+  padding: 28px;
+  background: linear-gradient(180deg, #f8fbff, #eef4ff);
+}
+
+/* ===== Header ===== */
+.dashboard-header h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1e3a8a;
+}
+
+.dashboard-header p {
+  font-size: 14px;
+  color: #2563eb;
+  margin-top: 4px;
+}
+
+/* ===== Triple Chart Grid ===== */
+.triple-chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 18px;
+  margin-top: 30px;
+}
+
+/* Soft background colors */
+.soft-pink {
+  background: #fff7f7;
+}
+
+.soft-green {
+  background: #f4fdf7;
+}
+
+.soft-yellow {
+  background: #fffbea;
+}
+
+/* ===== Enhanced Metric Cards ===== */
+.metric-card {
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+  transition: all 0.3s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.12);
+}
+
+/* Header */
+.metric-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.metric-header h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+}
+
+/* Icon */
+.metric-icon {
+  width: 26px;
+  height: 26px;
+}
+
+/* Value */
+.metric-value {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 8px 0;
+}
+
+/* Progress */
+.metric-progress {
+  height: 4px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.metric-progress .fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.8s ease;
+}
+
+/* Notes */
+.metric-note {
+  font-size: 12px;
+  color: #475569;
+  margin-top: 10px;
+}
+
+/* ===== Color Themes ===== */
+.gradient-green {
+  background: #f0fdf4;
+}
+
+.gradient-blue {
+  background: #f0f9ff;
+}
+
+.gradient-purple {
+  background: #faf5ff;
+}
+
+.green-text {
+  color: #16a34a;
+}
+
+.blue-text {
+  color: #2563eb;
+}
+
+.purple-text {
+  color: #9333ea;
+}
+
+.green-fill {
+  background: #22c55e;
+}
+
+.blue-fill {
+  background: #3b82f6;
+}
+
+.purple-fill {
+  background: #d946ef;
+}
+
+.green {
+  color: #22c55e;
+}
+
+.blue {
+  color: #3b82f6;
+}
+
+.purple {
+  color: #9333ea;
+}
+
+
+/* ===== Animations ===== */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUpOnHover {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-4px);
+  }
+}
+
+/* ===== Stat Cards ===== */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.stat-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+  transition: all 0.25s ease;
+  animation: slideInUp 0.35s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+}
+
+.stat-top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.stat-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.stat-value {
+  font-size: 26px;
+  font-weight: 800;
+  margin-top: 6px;
+}
+
+.progress-track {
+  width: 100%;
+  height: 4px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.8s ease;
+}
+
+.stat-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 8px;
+}
+
+/* ===== Metric Cards ===== */
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.metric-card {
+  background: #fff;
+  padding: 18px;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+}
+
+.metric-card h4 {
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.metric-card strong {
+  font-size: 20px;
+}
+
+/* ===== Charts ===== */
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 18px;
+  margin-top: 30px;
+}
+
+.chart-card {
+  background: #fff;
+  padding: 18px;
+  border-radius: 16px;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+}
+
+.chart-card h3 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.chart-card h6 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #1f2937;
+}
+
+.chart-subtitle {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.chart-card.full {
+  margin-top: 28px;
+}
+
+/* Soft Background Colors for Triple Grid */
+/* .chart-card.soft-pink {
+  background: linear-gradient(135deg, #fce7f3 0%, #fbf0f8 100%);
+}
+
+.chart-card.soft-green {
+  background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+}
+
+.chart-card.soft-yellow {
+  background: linear-gradient(135deg, #fffbeb 0%, #fefce8 100%);
+} */
+
+/* ===== Tooltip ===== */
+.dashboard-tooltip {
+  background: #ffffff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #0f172a;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "id": 79,
+    "borrower_id": "BR001",
+    "name": "ABI V",
+    "borrower_type": "Student",
+    "department": "B.PHARM (BACHELOR OF PHARMACY)",
+    "reg_or_staff_id": "560023529002",
+    "year_or_section": "3 / 5",
+    "mobile": "9787879080",
+    "email": "abi.v.23b@grt.edu.in",
+    "date_register": "2026-02-11",
+    "status": "Active",
+    "max_book_allowed": 3,
+    "Remarks": "nil",
+    "photo_path": "BR001.jpg",
+    "created_at": "2026-02-11T18:11:06",
+    "updated_at": "2026-02-11T18:11:06"
+  },
+  {
+    "id": 80,
+    "borrower_id": "BR002",
+    "name": "AASHIN W G",
+    "borrower_type": "Student",
+    "department": "B.PHARM (BACHELOR OF PHARMACY)",
+    "reg_or_staff_id": "560023529001",
+    "year_or_section": "3 / 5",
+    "mobile": "9976931249",
+    "email": "aashin.WG.23b@grt.edu.in",
+    "date_register": "2026-02-11",
+    "status": "Active",
+    "max_book_allowed": 3,
+    "Remarks": "nil",
+    "photo_path": "BR002.png",
+    "created_at": "2026-02-11T18:14:08",
+    "updated_at": "2026-02-11T18:14:08"
+  }
+]

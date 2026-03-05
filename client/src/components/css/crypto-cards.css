@@ -1,0 +1,24 @@
+/* Styles for crypto-style dashboard cards */
+.crypto-grid { margin-top: 0.5rem; }
+.card-crypto { border-radius: 12px; overflow: hidden; color: var(--neutral-900); box-shadow: var(--shadow-4); }
+.card-crypto .card-body { padding: 1rem; }
+.card-crypto .price { font-size: 1.375rem; font-weight: 700; color: var(--dark-1); }
+.card-crypto .symbol { font-weight: 600; color: var(--neutral-500); }
+.card-crypto .pct { font-weight: 700; font-size: 0.9rem; margin-left: 0.25rem; }
+.card-crypto .positive { color: var(--success-600); }
+.card-crypto .negative { color: var(--danger-600); }
+.card-crypto .sparkline { position: absolute; right: 12px; bottom: 10px; width: 160px; height: 52px; }
+.card-crypto svg { width: 160px; height: 52px; display: block; }
+
+/* Individual subtle background gradients matching the provided designs */
+.card-crypto.bitcoin { background: linear-gradient(90deg, #fff7ef 0%, #fff6f0 100%); }
+.card-crypto.ethereum { background: linear-gradient(90deg, #fffaf0 0%, #fff7f2 100%); }
+.card-crypto.solana { background: linear-gradient(90deg, #fff5fb 0%, #fff2fb 100%); }
+.card-crypto.litecoin { background: linear-gradient(90deg, #f3fbff 0%, #f5fbff 100%); }
+.card-crypto.dogecoin { background: linear-gradient(90deg, #fff9ef 0%, #fff7ef 100%); }
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .card-crypto .sparkline { width: 120px; height: 42px; }
+  .card-crypto svg { width: 120px; height: 42px; }
+}

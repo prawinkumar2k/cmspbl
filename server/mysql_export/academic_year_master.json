@@ -1,0 +1,80 @@
+[
+  {
+    "Id": 1,
+    "Academic_Year": "2017-2018",
+    "Created_At": "2025-11-19T11:21:54",
+    "Update_At": "2025-12-14T13:09:56"
+  },
+  {
+    "Id": 2,
+    "Academic_Year": "2018-2019",
+    "Created_At": "2025-11-19T11:21:54",
+    "Update_At": null
+  },
+  {
+    "Id": 3,
+    "Academic_Year": "2019-2020",
+    "Created_At": "2025-11-19T11:21:54",
+    "Update_At": null
+  },
+  {
+    "Id": 4,
+    "Academic_Year": "2020-2021",
+    "Created_At": "2025-11-19T11:21:54",
+    "Update_At": null
+  },
+  {
+    "Id": 5,
+    "Academic_Year": "2021-2022",
+    "Created_At": "2025-11-19T11:21:54",
+    "Update_At": null
+  },
+  {
+    "Id": 6,
+    "Academic_Year": "2022-2023",
+    "Created_At": "2025-11-19T11:21:54",
+    "Update_At": null
+  },
+  {
+    "Id": 7,
+    "Academic_Year": "2023-2024",
+    "Created_At": "2025-11-19T11:21:54",
+    "Update_At": null
+  },
+  {
+    "Id": 8,
+    "Academic_Year": "2024-2025",
+    "Created_At": "2025-11-19T11:21:54",
+    "Update_At": null
+  },
+  {
+    "Id": 9,
+    "Academic_Year": "2025-2026",
+    "Created_At": "2025-11-19T11:21:54",
+    "Update_At": null
+  },
+  {
+    "Id": 10,
+    "Academic_Year": "2026-2027",
+    "Created_At": "2025-11-20T06:42:46",
+    "Update_At": "2025-11-20T06:43:03"
+  },
+  {
+    "Id": 11,
+    "Academic_Year": "2024-2028",
+    "Created_At": "2026-02-05T13:38:15",
+    "Update_At": null
+  },
+  {
+    "Id": 12,
+    "Academic_Year": "2023-2027",
+    "Created_At": "2026-02-08T22:27:56",
+    "Update_At": null
+  },
+  {
+    "Id": 13,
+    "Academic_Year": "2024-2027",
+    "Created_At": "2026-02-08T22:28:02",
+    "Update_At": null
+  }
+]

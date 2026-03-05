@@ -1,0 +1,76 @@
+/* ================= BASE ================= */
+
+.theory-name-list-display {
+  font-family: Arial, sans-serif;
+  background: #fff;
+  color: #000;
+}
+
+/* ================= PAGE ================= */
+
+.subject-section {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Page break after each hall */
+.page-break {
+  break-after: page;
+  page-break-after: always;
+}
+
+/* ================= PAPER SIZES ================= */
+
+.paper-PaperA4 {
+  width: 210mm;
+  margin: 0 auto;
+  padding: 12mm;
+}
+
+/* ================= PRINT OVERRIDES ================= */
+
+@media print {
+
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+
+  /* Hide entire app */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Show only theory name list display */
+  .theory-name-list-display,
+  .theory-name-list-display * {
+    visibility: visible;
+  }
+
+  .theory-name-list-display {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  /* Set subject section for page break */
+  .subject-section {
+    width: 100%;
+    page-break-after: always;
+    position: relative;
+  }
+
+  /* Remove dashboard layout */
+  footer,
+  nav,
+  aside {
+    display: none !important;
+  }
+
+  /* Force borders/backgrounds in Chrome */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "Sub_Type": "Theory",
+    "CreatedAt": "2025-11-16T12:37:37",
+    "UpdatedAt": "2025-11-16T12:37:37"
+  },
+  {
+    "id": 2,
+    "Sub_Type": "Practical",
+    "CreatedAt": "2025-11-16T12:37:37",
+    "UpdatedAt": "2025-11-16T12:37:37"
+  }
+]

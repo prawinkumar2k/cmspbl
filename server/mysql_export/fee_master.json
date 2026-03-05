@@ -1,0 +1,152 @@
+[
+  {
+    "id": 9,
+    "Fee_Type": "ADMISSION FEE",
+    "CreatedAt": "2025-12-16T17:29:25",
+    "UpdatedAt": "2025-12-16T17:29:25"
+  },
+  {
+    "id": 10,
+    "Fee_Type": "APPLICATION FEE",
+    "CreatedAt": "2025-12-16T17:29:25",
+    "UpdatedAt": "2025-12-16T17:29:25"
+  },
+  {
+    "id": 11,
+    "Fee_Type": "BOOKS & STATIONARY FEES",
+    "CreatedAt": "2025-12-16T17:29:25",
+    "UpdatedAt": "2025-12-16T17:29:25"
+  },
+  {
+    "id": 12,
+    "Fee_Type": "BUS FEES",
+    "CreatedAt": "2025-12-16T17:29:25",
+    "UpdatedAt": "2025-12-16T17:29:25"
+  },
+  {
+    "id": 13,
+    "Fee_Type": "COURSE COMPLETION CERTIFICATE FEE",
+    "CreatedAt": "2025-12-16T17:29:25",
+    "UpdatedAt": "2025-12-16T17:29:25"
+  },
+  {
+    "id": 14,
+    "Fee_Type": "DEVELOPMENT FEE",
+    "CreatedAt": "2025-12-16T17:29:25",
+    "UpdatedAt": "2025-12-16T17:29:25"
+  },
+  {
+    "id": 15,
+    "Fee_Type": "EXAM FEE",
+    "CreatedAt": "2025-12-16T17:29:25",
+    "UpdatedAt": "2025-12-16T17:29:25"
+  },
+  {
+    "id": 16,
+    "Fee_Type": "EXAM FEES",
+    "CreatedAt": "2025-12-16T17:29:25",
+    "UpdatedAt": "2025-12-16T17:29:25"
+  },
+  {
+    "id": 17,
+    "Fee_Type": "HOSTEL FEES",
+    "CreatedAt": "2025-12-16T17:29:25",
+    "UpdatedAt": "2026-01-20T19:21:22"
+  },
+  {
+    "id": 18,
+    "Fee_Type": "INDUSTRIAL VISIT",
+    "CreatedAt": "2025-12-16T17:29:25",
+    "UpdatedAt": "2025-12-16T17:29:25"
+  },
+  {
+    "id": 19,
+    "Fee_Type": "LABORATORY FEE",
+    "CreatedAt": "2025-12-16T17:29:25",
+    "UpdatedAt": "2025-12-16T17:29:25"
+  },
+  {
+    "id": 20,
+    "Fee_Type": "MISCELLANEOUS FEE",
+    "CreatedAt": "2025-12-16T17:29:25",
+    "UpdatedAt": "2025-12-16T17:29:25"
+  },
+  {
+    "id": 21,
+    "Fee_Type": "PROJECT FEE",
+    "CreatedAt": "2025-12-16T17:29:25",
+    "UpdatedAt": "2025-12-16T17:29:25"
+  },
+  {
+    "id": 22,
+    "Fee_Type": "RECORD NOTE & SHEETS FEE",
+    "CreatedAt": "2025-12-16T17:29:25",
+    "UpdatedAt": "2025-12-16T17:29:25"
+  },
+  {
+    "id": 23,
+    "Fee_Type": "RECORD NOTE BOOK FEE",
+    "CreatedAt": "2025-12-16T17:29:25",
+    "UpdatedAt": "2025-12-16T17:29:25"
+  },
+  {
+    "id": 24,
+    "Fee_Type": "REGISTRATION FEE",
+    "CreatedAt": "2025-12-16T17:29:25",
+    "UpdatedAt": "2025-12-16T17:29:25"
+  },
+  {
+    "id": 25,
+    "Fee_Type": "SEMESTER FEE",
+    "CreatedAt": "2025-12-16T17:29:25",
+    "UpdatedAt": "2025-12-16T17:29:25"
+  },
+  {
+    "id": 26,
+    "Fee_Type": "SEMINAR FEE",
+    "CreatedAt": "2025-12-16T17:29:25",
+    "UpdatedAt": "2025-12-16T17:29:25"
+  },
+  {
+    "id": 27,
+    "Fee_Type": "SUPPLEMENTARY EXAM FEE",
+    "CreatedAt": "2025-12-16T17:29:25",
+    "UpdatedAt": "2025-12-16T17:29:25"
+  },
+  {
+    "id": 28,
+    "Fee_Type": "SUPPLEMENTARY EXAM FEES",
+    "CreatedAt": "2025-12-16T17:29:25",
+    "UpdatedAt": "2025-12-16T17:29:25"
+  },
+  {
+    "id": 29,
+    "Fee_Type": "TEXT BOOK FEE",
+    "CreatedAt": "2025-12-16T17:29:25",
+    "UpdatedAt": "2025-12-16T17:29:25"
+  },
+  {
+    "id": 30,
+    "Fee_Type": "TUITION FEE",
+    "CreatedAt": "2025-12-16T17:29:25",
+    "UpdatedAt": "2025-12-16T17:29:25"
+  },
+  {
+    "id": 31,
+    "Fee_Type": "UNIFORM ,BOOKS & RECORD FEE",
+    "CreatedAt": "2025-12-16T17:29:25",
+    "UpdatedAt": "2025-12-16T17:29:25"
+  },
+  {
+    "id": 32,
+    "Fee_Type": "UNIFORM FEE",
+    "CreatedAt": "2025-12-16T17:29:25",
+    "UpdatedAt": "2025-12-16T17:29:25"
+  },
+  {
+    "id": 33,
+    "Fee_Type": "Breakage Fess",
+    "CreatedAt": "2026-01-07T12:22:59",
+    "UpdatedAt": "2026-01-07T12:22:59"
+  }
+]

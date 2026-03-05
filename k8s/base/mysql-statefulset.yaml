@@ -1,0 +1,189 @@
+# =============================================================================
+# SF-ERP MySQL StatefulSet
+# =============================================================================
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+  namespace: sferp
+  labels:
+    app.kubernetes.io/name: sferp
+    app.kubernetes.io/component: mysql
+spec:
+  serviceName: mysql-service
+  replicas: 1  # Use 3 for production with read replicas
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sferp
+      app.kubernetes.io/component: mysql
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: sferp
+        app.kubernetes.io/component: mysql
+    spec:
+      terminationGracePeriodSeconds: 60
+      securityContext:
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+      
+      initContainers:
+        - name: init-mysql
+          image: mysql:8.0
+          command:
+            - bash
+            - -c
+            - |
+              # Copy config file
+              cp /mnt/config-map/my.cnf /mnt/conf.d/
+          volumeMounts:
+            - name: mysql-config-map
+              mountPath: /mnt/config-map
+            - name: conf
+              mountPath: /mnt/conf.d
+          securityContext:
+            runAsUser: 999
+            runAsGroup: 999
+      
+      containers:
+        - name: mysql
+          image: mysql:8.0
+          ports:
+            - name: mysql
+              containerPort: 3306
+              protocol: TCP
+          
+          env:
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: sferp-secrets
+                  key: DB_NAME
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: sferp-secrets
+                  key: DB_USER
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sferp-secrets
+                  key: DB_PASSWORD
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sferp-secrets
+                  key: DB_ROOT_PASSWORD
+          
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "2000m"
+              memory: "4Gi"
+          
+          livenessProbe:
+            exec:
+              command:
+                - bash
+                - -c
+                - mysqladmin ping -h localhost -uroot -p$MYSQL_ROOT_PASSWORD
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          
+          readinessProbe:
+            exec:
+              command:
+                - bash
+                - -c
+                - mysql -h localhost -uroot -p$MYSQL_ROOT_PASSWORD -e "SELECT 1"
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
+          
+          volumeMounts:
+            - name: mysql-data
+              mountPath: /var/lib/mysql
+            - name: conf
+              mountPath: /etc/mysql/conf.d
+            - name: initdb
+              mountPath: /docker-entrypoint-initdb.d
+      
+      volumes:
+        - name: conf
+          emptyDir: {}
+        - name: mysql-config-map
+          configMap:
+            name: mysql-config
+        - name: initdb
+          configMap:
+            name: mysql-initdb
+            optional: true
+  
+  volumeClaimTemplates:
+    - metadata:
+        name: mysql-data
+        labels:
+          app.kubernetes.io/name: sferp
+          app.kubernetes.io/component: mysql
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: standard
+        resources:
+          requests:
+            storage: 50Gi
+
+---
+# =============================================================================
+# MySQL Service (Headless for StatefulSet)
+# =============================================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+  namespace: sferp
+  labels:
+    app.kubernetes.io/name: sferp
+    app.kubernetes.io/component: mysql
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - name: mysql
+      port: 3306
+      targetPort: mysql
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: sferp
+    app.kubernetes.io/component: mysql
+
+---
+# =============================================================================
+# MySQL Read Service (for read replicas)
+# =============================================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-read
+  namespace: sferp
+  labels:
+    app.kubernetes.io/name: sferp
+    app.kubernetes.io/component: mysql
+spec:
+  type: ClusterIP
+  ports:
+    - name: mysql
+      port: 3306
+      targetPort: mysql
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: sferp
+    app.kubernetes.io/component: mysql

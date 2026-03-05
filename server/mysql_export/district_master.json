@@ -1,0 +1,268 @@
+[
+  {
+    "Id": 1,
+    "District": "Ariyalur",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 2,
+    "District": "Chengalpattu",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 3,
+    "District": "Chennai",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 4,
+    "District": "Coimbatore",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 5,
+    "District": "Cuddalore",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 6,
+    "District": "Dharmapuri",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 7,
+    "District": "Dindigul",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 8,
+    "District": "Erode",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 9,
+    "District": "Kallakurichi",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 10,
+    "District": "Kanchipuram",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 11,
+    "District": "Kanyakumari",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 12,
+    "District": "Karur",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 13,
+    "District": "Krishnagiri",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 14,
+    "District": "Madurai",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 15,
+    "District": "Mayiladuthurai",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 16,
+    "District": "Nagapattinam",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 17,
+    "District": "Namakkal",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 18,
+    "District": "Nilgiris",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 19,
+    "District": "Perambalur",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 20,
+    "District": "Pudukkottai",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 21,
+    "District": "Ramanathapuram",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 22,
+    "District": "Ranipet",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 23,
+    "District": "Salem",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 24,
+    "District": "Sivagangai",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 25,
+    "District": "Tenkasi",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 26,
+    "District": "Thanjavur",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 27,
+    "District": "Theni",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 28,
+    "District": "Thoothukudi",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 29,
+    "District": "Tiruchirappalli",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 30,
+    "District": "Tirunelveli",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 31,
+    "District": "Tirupathur",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 32,
+    "District": "Tiruppur",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 33,
+    "District": "Tiruvallur",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 34,
+    "District": "Tiruvannamalai",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 35,
+    "District": "Tiruvarur",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 36,
+    "District": "Vellore",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 37,
+    "District": "Viluppuram",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  },
+  {
+    "Id": 38,
+    "District": "Virudhunagar",
+    "State": "Tamil Nadu",
+    "Created_At": "2025-11-22T12:54:05",
+    "Updated_At": "2025-11-22T12:54:05"
+  }
+]

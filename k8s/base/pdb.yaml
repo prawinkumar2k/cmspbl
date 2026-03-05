@@ -1,0 +1,53 @@
+# =============================================================================
+# SF-ERP Pod Disruption Budgets (PDB)
+# =============================================================================
+# Ensures high availability during voluntary disruptions
+# (node maintenance, cluster upgrades, etc.)
+# =============================================================================
+
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: sferp-backend-pdb
+  namespace: sferp
+  labels:
+    app.kubernetes.io/name: sferp
+    app.kubernetes.io/component: backend
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sferp
+      app.kubernetes.io/component: backend
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: sferp-frontend-pdb
+  namespace: sferp
+  labels:
+    app.kubernetes.io/name: sferp
+    app.kubernetes.io/component: frontend
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sferp
+      app.kubernetes.io/component: frontend
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mysql-pdb
+  namespace: sferp
+  labels:
+    app.kubernetes.io/name: sferp
+    app.kubernetes.io/component: mysql
+spec:
+  maxUnavailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sferp
+      app.kubernetes.io/component: mysql

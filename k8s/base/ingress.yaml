@@ -1,0 +1,177 @@
+# =============================================================================
+# SF-ERP Ingress Configuration
+# =============================================================================
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sferp-ingress
+  namespace: sferp
+  labels:
+    app.kubernetes.io/name: sferp
+    app.kubernetes.io/component: ingress
+  annotations:
+    # Nginx Ingress Controller annotations
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "30"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "8k"
+    nginx.ingress.kubernetes.io/client-body-buffer-size: "16k"
+    
+    # SSL/TLS configuration (uncomment when using HTTPS)
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    # nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    
+    # Rate limiting
+    nginx.ingress.kubernetes.io/limit-rps: "100"
+    nginx.ingress.kubernetes.io/limit-connections: "50"
+    
+    # Security headers
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      add_header X-Frame-Options "SAMEORIGIN" always;
+      add_header X-Content-Type-Options "nosniff" always;
+      add_header X-XSS-Protection "1; mode=block" always;
+      add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    
+    # Enable gzip
+    nginx.ingress.kubernetes.io/enable-gzip: "true"
+spec:
+  # TLS configuration (uncomment for HTTPS)
+  # tls:
+  #   - hosts:
+  #       - sferp.example.com
+  #     secretName: sferp-tls-secret
+  
+  rules:
+    - host: sferp.example.com  # Replace with your domain
+      http:
+        paths:
+          # API routes go to backend
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: sferp-backend
+                port:
+                  number: 5000
+          
+          # Health check routes go to backend
+          - path: /health
+            pathType: Exact
+            backend:
+              service:
+                name: sferp-backend
+                port:
+                  number: 5000
+          
+          - path: /ready
+            pathType: Exact
+            backend:
+              service:
+                name: sferp-backend
+                port:
+                  number: 5000
+          
+          - path: /live
+            pathType: Exact
+            backend:
+              service:
+                name: sferp-backend
+                port:
+                  number: 5000
+          
+          - path: /metrics
+            pathType: Exact
+            backend:
+              service:
+                name: sferp-backend
+                port:
+                  number: 5000
+          
+          # All other routes go to frontend
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: sferp-frontend
+                port:
+                  number: 80
+
+---
+# =============================================================================
+# Network Policy - Backend
+# =============================================================================
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: sferp-backend-network-policy
+  namespace: sferp
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: sferp
+      app.kubernetes.io/component: backend
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    # Allow from frontend and ingress
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: sferp
+              app.kubernetes.io/component: frontend
+        - namespaceSelector:
+            matchLabels:
+              name: ingress-nginx
+      ports:
+        - protocol: TCP
+          port: 5000
+  egress:
+    # Allow to MySQL
+    - to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: sferp
+              app.kubernetes.io/component: mysql
+      ports:
+        - protocol: TCP
+          port: 3306
+    # Allow DNS
+    - to:
+        - namespaceSelector: {}
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - protocol: UDP
+          port: 53
+
+---
+# =============================================================================
+# Network Policy - MySQL
+# =============================================================================
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: mysql-network-policy
+  namespace: sferp
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: sferp
+      app.kubernetes.io/component: mysql
+  policyTypes:
+    - Ingress
+  ingress:
+    # Only allow from backend
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: sferp
+              app.kubernetes.io/component: backend
+      ports:
+        - protocol: TCP
+          port: 3306

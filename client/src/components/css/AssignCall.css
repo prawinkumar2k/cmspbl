@@ -1,0 +1,280 @@
+.assign-call-container {
+    padding: 28px;
+    background: linear-gradient(180deg, #f8fbff, #eef4ff);
+    min-height: 100vh;
+}
+
+.page-header {
+    margin-bottom: 32px;
+}
+
+/* Premium Card Styles */
+.premium-card {
+    background: #ffffff;
+    border-radius: 20px;
+    border: none;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.premium-card:hover {
+    box-shadow: 0 16px 32px rgba(15, 23, 42, 0.12);
+}
+
+.premium-card-header {
+    padding: 24px 32px;
+    color: white;
+    background-color: #f4f4ec;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+/* .card-gradient-blue {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+} */
+
+/* .card-gradient-pink {
+    background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%);
+} */
+
+.premium-card-body {
+    padding: 32px;
+}
+
+/* Form Styling */
+.assign-form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    align-items: flex-end;
+}
+
+.form-group-custom {
+    flex: 1;
+    min-width: 280px;
+}
+
+.form-group-custom label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #475569;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.input-container-premium {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon-left {
+    position: absolute;
+    left: 16px;
+    color: #94a3b8;
+}
+
+.form-control-premium {
+    width: 100%;
+    padding: 12px 16px 12px 48px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    color: #1e293b;
+    background-color: #f8fafc;
+    transition: all 0.2s;
+}
+
+.form-control-premium:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.form-control-premium:read-only {
+    background-color: #f1f5f9;
+    cursor: default;
+}
+
+/* Role Dropdown */
+.role-dropdown-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 12px;
+    margin-top: 8px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    max-height: 280px;
+    overflow-y: auto;
+    border: 1px solid #f1f5f9;
+}
+
+.role-item {
+    padding: 14px 20px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    background: transparent;
+    transition: all 0.2s;
+    border-bottom: 1px solid #f8fafc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.role-item:hover {
+    background-color: #f0f7ff;
+    padding-left: 24px;
+}
+
+.role-name {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.role-tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 2px 8px;
+    border-radius: 999px;
+}
+
+/* Tenant Info Section */
+.tenant-info-box {
+    margin-top: 24px;
+    padding: 24px;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tenant-details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 32px;
+}
+
+.detail-label {
+    font-size: 0.75rem;
+    color: #64748b;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.detail-value {
+    font-size: 0.95rem;
+    color: #1e293b;
+    font-weight: 700;
+}
+
+/* Selection Summary */
+.selection-badge-container {
+    text-align: right;
+}
+
+.selection-count {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #3b82f6;
+    line-height: 1;
+}
+
+.selection-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+}
+
+/* Custom Buttons */
+.btn-premium-assign {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 12px;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+    transition: all 0.2s;
+}
+
+.btn-premium-assign:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(16, 185, 129, 0.35);
+}
+
+.btn-premium-assign:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: #cbd5e1;
+    box-shadow: none;
+}
+
+.btn-premium-reset {
+    background: #ffffff;
+    color: #ef4444;
+    border: 2px solid #fee2e2;
+    padding: 14px 32px;
+    border-radius: 12px;
+    font-weight: 700;
+    transition: all 0.2s;
+}
+
+.btn-premium-reset:hover {
+    background: #fef2f2;
+    border-color: #fca5a5;
+}
+
+/* Animations */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-up {
+    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .assign-form-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .tenant-info-box {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+
+    .tenant-details-grid {
+        grid-template-columns: 1fr;
+    }
+}

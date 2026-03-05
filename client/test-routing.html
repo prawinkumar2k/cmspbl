@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Transport Routing</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-links { margin: 20px 0; }
+        .test-links a { 
+            display: block; 
+            margin: 10px 0; 
+            padding: 10px; 
+            background: #007bff; 
+            color: white; 
+            text-decoration: none; 
+            border-radius: 5px;
+            width: 200px;
+            text-align: center;
+        }
+        .test-links a:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>Transport Routing Test</h1>
+    <p>Click the links below to test the transport routes:</p>
+    
+    <div class="test-links">
+        <a href="http://localhost:3000/transport-entry">Transport Entry</a>
+        <a href="http://localhost:3000/transport-reports">Transport Reports</a>
+        <a href="http://localhost:3000/admin/administrator/transport/TransportEntry">Transport Entry (Full Path)</a>
+        <a href="http://localhost:3000/admin/administrator/transport/TransportReports">Transport Reports (Full Path)</a>
+        <a href="http://localhost:3000/admin/adminDashboard">Admin Dashboard</a>
+    </div>
+    
+    <h2>Expected Behavior:</h2>
+    <ul>
+        <li>All transport links should load the respective components</li>
+        <li>Console should show "TransportEntry component loaded successfully!" or "TransportReports component loaded successfully!"</li>
+        <li>Transport menu should be available in the sidebar under Transport > Vehicle</li>
+    </ul>
+</body>
+</html>

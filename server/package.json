@@ -1,0 +1,50 @@
+{
+  "name": "sf-erp-server",
+  "version": "1.0.0",
+  "main": "app.js",
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon server.js",
+    "start": "cross-env NODE_ENV=production node app.js",
+    "start:legacy": "cross-env NODE_ENV=production node server.js",
+    "lint": "eslint . --ext .js",
+    "lint:fix": "eslint . --ext .js --fix",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:coverage": "npm test -- --coverage",
+    "health": "curl -f http://localhost:5000/health || exit 1",
+    "mongo:migrate": "node scripts/migrateToMongo.js",
+    "mongo:export": "python scripts/exportMysql.py"
+  },
+  "keywords": [
+    "erp",
+    "education",
+    "management"
+  ],
+  "author": "SF-ERP Team",
+  "license": "ISC",
+  "description": "SF-ERP Backend API Server - Production-grade ERP system",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "express-validator": "^7.3.1",
+    "helmet": "^8.1.0",
+    "html2pdf.js": "^0.12.1",
+    "jsonwebtoken": "^9.0.3",
+    "lucide-react": "^0.562.0",
+    "mongoose": "^9.2.2",
+    "multer": "^2.0.2",
+    "nodemon": "^3.1.10",
+    "react-feather": "^2.0.10",
+    "react-slick": "^0.31.0",
+    "slick-carousel": "^1.8.1",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "cross-env": "^10.1.0"
+  }
+}

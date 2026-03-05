@@ -1,0 +1,5 @@
+﻿  } catch (err) {
+    console.error('Error bulk creating assignments:', err);
+    res.status(500).json({ success: false, error: 'Failed to process bulk assignments', details: err.message });
+  }
+};

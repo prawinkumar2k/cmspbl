@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "Elective": "Yes",
+    "CreatedAt": "2025-11-16T12:35:40",
+    "UpdatedAt": "2025-11-16T12:35:40"
+  },
+  {
+    "id": 2,
+    "Elective": "No",
+    "CreatedAt": "2025-11-16T12:35:40",
+    "UpdatedAt": "2025-11-16T12:35:40"
+  }
+]

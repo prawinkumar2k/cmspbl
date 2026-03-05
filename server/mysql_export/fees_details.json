@@ -1,0 +1,17 @@
+[
+  {
+    "Id": 290,
+    "Academic_Year": "2023-2027",
+    "Mode_of_Join": "Both",
+    "Course_Name": "Pharmacy",
+    "Dept_Name": "B.PHARM (BACHELOR OF PHARMACY)",
+    "Dept_Code": "5010",
+    "Semester": 5,
+    "Year": 3,
+    "Type": "Academic",
+    "Fees_Type": "BOOKS & STATIONARY FEES",
+    "Amount": "2000.00",
+    "Created_At": "2026-02-23T14:02:07",
+    "Updated_At": "2026-02-23T14:02:07"
+  }
+]

@@ -1,0 +1,266 @@
+[
+  {
+    "category_id": 1,
+    "category_name": " Human Anatomy & Physiology"
+  },
+  {
+    "category_id": 2,
+    "category_name": "Biochemistry"
+  },
+  {
+    "category_id": 3,
+    "category_name": "Biochemistry & Clinical Pathology"
+  },
+  {
+    "category_id": 4,
+    "category_name": "Pathophysiology"
+  },
+  {
+    "category_id": 5,
+    "category_name": "Remedial Biology"
+  },
+  {
+    "category_id": 6,
+    "category_name": "Remedial Mathematics"
+  },
+  {
+    "category_id": 7,
+    "category_name": "Communication Skills"
+  },
+  {
+    "category_id": 8,
+    "category_name": "Environmental Sciences"
+  },
+  {
+    "category_id": 9,
+    "category_name": " Statistics / Biostatistics & Research Methodology"
+  },
+  {
+    "category_id": 10,
+    "category_name": "Computer Applications in Pharmacy"
+  },
+  {
+    "category_id": 11,
+    "category_name": "Computer Aided Drug Design"
+  },
+  {
+    "category_id": 12,
+    "category_name": "Pharmaceutical Inorganic Chemistry"
+  },
+  {
+    "category_id": 13,
+    "category_name": "Pharmaceutical Organic Chemistry I"
+  },
+  {
+    "category_id": 14,
+    "category_name": "Pharmaceutical Organic Chemistry II"
+  },
+  {
+    "category_id": 15,
+    "category_name": "Pharmaceutical Organic Chemistry III"
+  },
+  {
+    "category_id": 16,
+    "category_name": "Medicinal Chemistry I"
+  },
+  {
+    "category_id": 17,
+    "category_name": "Medicinal Chemistry II"
+  },
+  {
+    "category_id": 18,
+    "category_name": "Medicinal Chemistry III"
+  },
+  {
+    "category_id": 19,
+    "category_name": "Pharmaceutical Chemistry"
+  },
+  {
+    "category_id": 20,
+    "category_name": "Pharmaceutical Analysis I"
+  },
+  {
+    "category_id": 21,
+    "category_name": "Instrumental Methods of Analysis"
+  },
+  {
+    "category_id": 22,
+    "category_name": "Advanced Instrumentation Techniques"
+  },
+  {
+    "category_id": 23,
+    "category_name": "Pharmaceutical Microbiology"
+  },
+  {
+    "category_id": 24,
+    "category_name": "Pharmaceutical Biotechnology"
+  },
+  {
+    "category_id": 25,
+    "category_name": "Pharmacognosy"
+  },
+  {
+    "category_id": 26,
+    "category_name": "Pharmacognosy and Phytochemistry I"
+  },
+  {
+    "category_id": 27,
+    "category_name": " Pharmacognosy and Phytochemistry II"
+  },
+  {
+    "category_id": 28,
+    "category_name": " Herbal Drug Technology"
+  },
+  {
+    "category_id": 29,
+    "category_name": "Pharmaceutics I"
+  },
+  {
+    "category_id": 30,
+    "category_name": " Pharmaceutics"
+  },
+  {
+    "category_id": 31,
+    "category_name": " Physical Pharmaceutics I"
+  },
+  {
+    "category_id": 32,
+    "category_name": "Physical Pharmaceutics II"
+  },
+  {
+    "category_id": 33,
+    "category_name": " Industrial Pharmacy I"
+  },
+  {
+    "category_id": 34,
+    "category_name": " Industrial Pharmacy II"
+  },
+  {
+    "category_id": 35,
+    "category_name": "Novel Drug Delivery System"
+  },
+  {
+    "category_id": 36,
+    "category_name": "Pharmaceutical Engineering"
+  },
+  {
+    "category_id": 37,
+    "category_name": " Quality Assurance"
+  },
+  {
+    "category_id": 38,
+    "category_name": "Quality Control and Standardization of Herbal Drugs"
+  },
+  {
+    "category_id": 39,
+    "category_name": "Pharmaceutical Jurisprudence"
+  },
+  {
+    "category_id": 40,
+    "category_name": "Pharmacy Law & Ethics"
+  },
+  {
+    "category_id": 41,
+    "category_name": " Pharmaceutical Regulatory Science"
+  },
+  {
+    "category_id": 42,
+    "category_name": " Pharmacology I"
+  },
+  {
+    "category_id": 43,
+    "category_name": "Pharmacology II"
+  },
+  {
+    "category_id": 44,
+    "category_name": " Pharmacology III"
+  },
+  {
+    "category_id": 45,
+    "category_name": "Advanced Pharmacology I"
+  },
+  {
+    "category_id": 46,
+    "category_name": " Advanced Pharmacology II"
+  },
+  {
+    "category_id": 47,
+    "category_name": "Experimental Pharmacology"
+  },
+  {
+    "category_id": 48,
+    "category_name": " Experimental Pharmacology II"
+  },
+  {
+    "category_id": 49,
+    "category_name": " Pharmacology Practical I"
+  },
+  {
+    "category_id": 50,
+    "category_name": "Pharmacology Practical II"
+  },
+  {
+    "category_id": 51,
+    "category_name": "Pharmacological and Toxicological Screening I"
+  },
+  {
+    "category_id": 52,
+    "category_name": "Pharmacological and Toxicological Screening II"
+  },
+  {
+    "category_id": 53,
+    "category_name": "Pharmacovigilance"
+  },
+  {
+    "category_id": 54,
+    "category_name": "Cellular and Molecular Pharmacology"
+  },
+  {
+    "category_id": 55,
+    "category_name": "Pharmacotherapeutics"
+  },
+  {
+    "category_id": 56,
+    "category_name": "Biopharmaceutics and Pharmacokinetics"
+  },
+  {
+    "category_id": 57,
+    "category_name": "Social Pharmacy"
+  },
+  {
+    "category_id": 58,
+    "category_name": "Social and Preventive Pharmacy"
+  },
+  {
+    "category_id": 59,
+    "category_name": "Community Pharmacy & Management"
+  },
+  {
+    "category_id": 60,
+    "category_name": "Hospital & Clinical Pharmacy"
+  },
+  {
+    "category_id": 61,
+    "category_name": "Pharmacy Practice"
+  },
+  {
+    "category_id": 62,
+    "category_name": "Pharmaceutical Marketing"
+  },
+  {
+    "category_id": 63,
+    "category_name": "Cosmetic Science"
+  },
+  {
+    "category_id": 64,
+    "category_name": "Dietary Supplements and Nutraceuticals"
+  },
+  {
+    "category_id": 65,
+    "category_name": " Practice School"
+  },
+  {
+    "category_id": 66,
+    "category_name": " General Book"
+  }
+]
