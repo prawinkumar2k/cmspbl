@@ -4,67 +4,31 @@ import { Icon } from "@iconify/react";
 import { useAuth } from "../context/AuthContext";
 import "./css/sidebar-enhanced.css";
 
+const normalizeSidebarModuleRecord = (module) => ({
+  id: module?.id ?? module?._id ?? module?.Id ?? null,
+  module_name: module?.module_name ?? module?.moduleName ?? "",
+  module_key: module?.module_key ?? module?.moduleKey ?? "",
+  module_category: module?.module_category ?? module?.moduleCategory ?? "Others",
+  module_path: module?.module_path ?? module?.modulePath ?? "#",
+  display_order: module?.display_order ?? module?.displayOrder ?? 999,
+  is_active: module?.is_active ?? module?.isActive ?? true,
+});
+
 const Sidebar = () => {
   const location = useLocation();
-  const { getAuthHeaders, user } = useAuth();
+  const { sidebarModules: globalModules, user } = useAuth();
 
-  // State for API-fetched modules
-  const [sidebarModules, setSidebarModules] = useState([]);
-  const [isLoadingModules, setIsLoadingModules] = useState(true);
-  const [useDynamicSidebar, setUseDynamicSidebar] = useState(true); // Toggle between API and static config
-  const [isSidebarMinimized, setIsSidebarMinimized] = useState(false); // Track sidebar minimized state
-  const [hoveredDropdown, setHoveredDropdown] = useState(null); // Track which dropdown is hovered
+  // State for components logic
+  const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
+  const [hoveredDropdown, setHoveredDropdown] = useState(null);
 
-  // Fetch sidebar modules from API
-  useEffect(() => {
-    const fetchSidebarModules = async () => {
-      // console.log('fetchSidebarModules called, user:', user);
+  // Normalize modules from context
+  const sidebarModules = useMemo(() => {
+    return Array.isArray(globalModules) ? globalModules.map(normalizeSidebarModuleRecord) : [];
+  }, [globalModules]);
 
-      if (!user) {
-        // console.log('No user found, skipping sidebar fetch');
-        setIsLoadingModules(false);
-        return;
-      }
-
-      try {
-        // console.log('Fetching sidebar modules for user:', user.username);
-        const token = localStorage.getItem('token');
-        // console.log('Token from localStorage:', token ? 'Present' : 'Not present');
-
-        const headers = {
-          'Content-Type': 'application/json',
-          'Authorization': token ? `Bearer ${token}` : ''
-        };
-        // console.log('Request headers:', headers);
-
-        const response = await fetch('/api/auth/sidebar', {
-          headers: headers
-        });
-
-        // console.log('Sidebar API response status:', response.status);
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          console.error('Failed to fetch sidebar modules. Status:', response.status, 'Response:', errorText);
-          setUseDynamicSidebar(false);
-          setIsLoadingModules(false);
-          return;
-        }
-
-        const data = await response.json();
-        // console.log('Sidebar modules received:', data);
-        setSidebarModules(data.data || []);
-        setUseDynamicSidebar(true);
-        setIsLoadingModules(false);
-      } catch (err) {
-        console.error('Error fetching sidebar:', err);
-        setUseDynamicSidebar(false);
-        setIsLoadingModules(false);
-      }
-    };
-
-    fetchSidebarModules();
-  }, [user]);
+  const isLoadingModules = sidebarModules.length === 0 && !!user;
+  const useDynamicSidebar = true;
 
   // Get color for menu items - with icon background and text colors
   const getMenuItemColor = (moduleKey, index) => {
@@ -1247,7 +1211,15 @@ const Sidebar = () => {
       {/* Menu Section */}
       <div className="sidebar-menu-area">
         <ul className="sidebar-menu" id="sidebar-menu">
-          {activeSidebarConfig.map(renderMenuItem)}
+          {activeSidebarConfig.length > 0 ? (
+            activeSidebarConfig.map(renderMenuItem)
+          ) : (
+            <li className="sidebar-menu-group-title">
+              {user?.role_name?.toLowerCase() === "student"
+                ? "Student menu uses the student dashboard sidebar."
+                : "No sidebar modules available for this account."}
+            </li>
+          )}
         </ul>
       </div>
     </aside>

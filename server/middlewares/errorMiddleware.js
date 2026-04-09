@@ -85,9 +85,9 @@ export const errorHandler = (err, req, res, next) => {
     };
     logger.warn('Validation error', { ...requestContext, errors: err.array?.() || err.details });
   }
-  // Handle MySQL errors
-  else if (err.code && err.code.startsWith('ER_')) {
-    const errorInfo = mapMySQLError(err);
+  // Handle MongoDB / Mongoose errors
+  else if (err.name === 'CastError' || err.name === 'MongoServerError' || err.code === 11000) {
+    const errorInfo = mapDatabaseError(err);
     statusCode = errorInfo.status;
     response = {
       success: false,
@@ -99,8 +99,8 @@ export const errorHandler = (err, req, res, next) => {
     };
     logger.error('Database error', {
       ...requestContext,
-      mysqlCode: err.code,
-      sqlMessage: err.sqlMessage,
+      dbCode: err.code,
+      dbMessage: err.message,
     });
   }
   // Handle JWT errors
@@ -171,25 +171,25 @@ export const errorHandler = (err, req, res, next) => {
 };
 
 /**
- * Map MySQL error codes to our error codes
+ * Map MongoDB / Mongoose errors to our error codes
  */
-const mapMySQLError = (err) => {
-  const mapping = {
-    'ER_DUP_ENTRY': { status: 409, code: ErrorCodes.VALIDATION_DUPLICATE.code, message: 'Duplicate entry' },
-    'ER_NO_REFERENCED_ROW': { status: 400, code: ErrorCodes.DB_CONSTRAINT_VIOLATION.code, message: 'Referenced record not found' },
-    'ER_NO_REFERENCED_ROW_2': { status: 400, code: ErrorCodes.DB_CONSTRAINT_VIOLATION.code, message: 'Referenced record not found' },
-    'ER_ROW_IS_REFERENCED': { status: 409, code: ErrorCodes.DB_CONSTRAINT_VIOLATION.code, message: 'Record is referenced by other data' },
-    'ER_ROW_IS_REFERENCED_2': { status: 409, code: ErrorCodes.DB_CONSTRAINT_VIOLATION.code, message: 'Record is referenced by other data' },
-    'ER_LOCK_WAIT_TIMEOUT': { status: 503, code: ErrorCodes.DB_TIMEOUT.code, message: 'Operation timed out' },
-    'ER_LOCK_DEADLOCK': { status: 503, code: ErrorCodes.DB_TIMEOUT.code, message: 'Operation failed due to conflict' },
-    'ER_DATA_TOO_LONG': { status: 400, code: ErrorCodes.VALIDATION_OUT_OF_RANGE.code, message: 'Data too long for field' },
-    'ER_TRUNCATED_WRONG_VALUE': { status: 400, code: ErrorCodes.VALIDATION_INVALID_FORMAT.code, message: 'Invalid value format' },
-  };
+const mapDatabaseError = (err) => {
+  if (err.code === 11000) {
+    return { status: 409, code: ErrorCodes.VALIDATION_DUPLICATE.code, message: 'Duplicate entry' };
+  }
 
-  return mapping[err.code] || { 
-    status: 500, 
-    code: ErrorCodes.DB_QUERY_FAILED.code, 
-    message: 'Database operation failed' 
+  if (err.name === 'CastError') {
+    return { status: 400, code: ErrorCodes.VALIDATION_INVALID_FORMAT.code, message: 'Invalid identifier format' };
+  }
+
+  if (err.name === 'MongoServerError') {
+    return { status: 500, code: ErrorCodes.DB_QUERY_FAILED.code, message: 'Database operation failed' };
+  }
+
+  return {
+    status: 500,
+    code: ErrorCodes.DB_QUERY_FAILED.code,
+    message: 'Database operation failed'
   };
 };
 

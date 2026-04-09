@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import { getBranches, addBranch, editBranch, deleteBranch, checkCourseCode } from '../controller/branchController.js';
-import db from '../db.js'; // Add this import if not present
+import Course from '../models/Course.js';
+import CourseMaster from '../models/CourseMaster.js';
+import Regulation from '../models/Regulation.js';
 
 const router = Router();
 
@@ -22,8 +24,10 @@ router.get('/check-course-code', checkCourseCode);
 // Get all course names from course_master
 router.get('/course-names', async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT Course_Name FROM course_master');
-    res.json(rows.map(row => row.Course_Name));
+    const courseNames = (await CourseMaster.distinct('courseName'))
+      .filter(Boolean)
+      .sort((a, b) => a.localeCompare(b));
+    res.json(courseNames);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -32,8 +36,10 @@ router.get('/course-names', async (req, res) => {
 // Get all institution types from ins_type_master
 router.get('/institution-types', async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT Ins_Type FROM ins_type_master');
-    res.json(rows.map(row => row.Ins_Type));
+    const institutionTypes = (await Course.distinct('insType'))
+      .filter(Boolean)
+      .sort((a, b) => a.localeCompare(b));
+    res.json(institutionTypes);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -42,8 +48,10 @@ router.get('/institution-types', async (req, res) => {
 // Get all course modes from course_mode_master
 router.get('/course-mode', async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT Course_Mode FROM course_mode_master');
-    res.json(rows.map(row => row.Course_Mode));
+    const courseModes = (await Course.distinct('courseMode'))
+      .filter(Boolean)
+      .sort((a, b) => a.localeCompare(b));
+    res.json(courseModes);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -52,8 +60,10 @@ router.get('/course-mode', async (req, res) => {
 // Get all regulations from regulation_master
 router.get('/regulations', async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT Regulation FROM regulation_master');
-    res.json(rows.map(row => row.Regulation));
+    const regulations = (await Regulation.distinct('regulationName'))
+      .filter(Boolean)
+      .sort((a, b) => a.localeCompare(b));
+    res.json(regulations);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

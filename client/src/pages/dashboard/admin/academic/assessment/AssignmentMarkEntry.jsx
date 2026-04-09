@@ -250,7 +250,7 @@ const AssignmentMarkEntry = () => {
       if (name === 'assignmentNo') {
         const selectedAssignment = assignments.find(a => a.testNo === parseInt(value));
         if (selectedAssignment) {
-          // Format date as YYYY-MM-DD for MySQL
+      // Format date as YYYY-MM-DD
           if (selectedAssignment.assessmentDate) {
             const date = new Date(selectedAssignment.assessmentDate);
             const year = date.getFullYear();

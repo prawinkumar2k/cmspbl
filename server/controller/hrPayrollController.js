@@ -84,7 +84,7 @@ export const generatePayslips = async (req, res) => {
         }
 
         if (payslips.length > 0) {
-            // ✅ bulkWrite with upsert replaces MySQL: INSERT ... ON DUPLICATE KEY UPDATE
+            // ✅ bulkWrite with upsert for payroll persistence
             const bulkOps = payslips.map(p => ({
                 updateOne: {
                     filter: { staffId: p.staffId, month: p.month, year: p.year },
@@ -108,7 +108,7 @@ export const processMonthlyPayroll = async (req, res) => {
     try {
         const { month, year } = req.body;
 
-        // ✅ MongoDB: updateMany replaces MySQL UPDATE WHERE
+        // ✅ MongoDB updateMany for bulk payroll updates
         const result = await Payroll.updateMany(
             { month: parseInt(month), year: parseInt(year), status: 'generated' },
             { $set: { status: 'paid', paidDate: new Date() } }
@@ -129,7 +129,7 @@ export const getPayrollReports = async (req, res) => {
         const matchFilter = { month: parseInt(month), year: parseInt(year) };
 
         if (reportType === 'summary') {
-            // ✅ MongoDB aggregation replaces MySQL SUM/COUNT/CASE WHEN
+            // ✅ MongoDB aggregation for payroll summaries
             const [result] = await Payroll.aggregate([
                 { $match: matchFilter },
                 {
@@ -234,3 +234,4 @@ export const updateSalaryStructure = async (req, res) => {
         res.status(500).json({ error: 'Failed to update salary structure' });
     }
 };
+

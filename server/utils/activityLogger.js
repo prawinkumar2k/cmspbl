@@ -1,7 +1,7 @@
-import db from '../db.js';
+import ActivityLog from '../models/ActivityLog.js';
 
 /**
- * Log user activity to log_details table
+ * Log user activity to MongoDB activity_logs collection
  * @param {string} username - The username of the user performing the action
  * @param {string} role - The role of the user
  * @param {string} action - Description of the action taken
@@ -9,15 +9,15 @@ import db from '../db.js';
  */
 export const logActivity = async (username, role, action) => {
   try {
-    const query = `
-      INSERT INTO log_details (username, role, login_date, action, CreatedAt, UpdatedAt)
-      VALUES (?, ?, NOW(), ?, NOW(), NOW())
-    `;
-    
-    await db.query(query, [username, role, action]);
-    console.log(`✅ Activity logged: ${username} (${role}) - ${action}`);
+    await ActivityLog.create({
+      username,
+      role,
+      action,
+      timestamp: new Date(),
+    });
+    console.log(`Activity logged: ${username} (${role}) - ${action}`);
   } catch (error) {
-    console.error('❌ Error logging activity:', error.message);
+    console.error('Error logging activity:', error.message);
     // Don't throw error to prevent activity logging from breaking the main flow
   }
 };

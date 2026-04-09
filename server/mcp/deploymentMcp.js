@@ -164,10 +164,7 @@ export const validateDeploymentConfig = () => {
   // Required environment variables in production
   if (config.server.isProduction) {
     const requiredVars = [
-      'DB_HOST',
-      'DB_USER',
-      'DB_PASSWORD',
-      'DB_NAME',
+      'MONGO_URI',
       'JWT_SECRET',
     ];
     
@@ -182,15 +179,15 @@ export const validateDeploymentConfig = () => {
       errors.push('JWT_SECRET contains default value - must be changed in production');
     }
     
-    if (process.env.DB_PASSWORD?.length < 12) {
-      warnings.push('DB_PASSWORD is less than 12 characters');
+    if (process.env.MONGO_URI?.includes('127.0.0.1') || process.env.MONGO_URI?.includes('localhost')) {
+      warnings.push('MONGO_URI points to a local database; verify this is intended for production');
     }
   }
   
-  // Validate database pool size
-  const poolSize = parseInt(process.env.DB_POOL_SIZE, 10);
+  // Validate MongoDB pool size
+  const poolSize = parseInt(process.env.MONGO_MAX_POOL_SIZE, 10);
   if (poolSize && poolSize > 200) {
-    warnings.push(`DB_POOL_SIZE (${poolSize}) is very high, may cause memory issues`);
+    warnings.push(`MONGO_MAX_POOL_SIZE (${poolSize}) is very high, may cause memory issues`);
   }
   
   return {

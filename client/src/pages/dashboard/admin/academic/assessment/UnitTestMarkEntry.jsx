@@ -251,7 +251,7 @@ const UnitTestMarkEntry = () => {
       if (name === 'unitTestNo') {
         const selectedUnitTest = unitTests.find(t => t.testNo === parseInt(value));
         if (selectedUnitTest) {
-          // Format date as YYYY-MM-DD for MySQL
+      // Format date as YYYY-MM-DD
           if (selectedUnitTest.assessmentDate) {
             const date = new Date(selectedUnitTest.assessmentDate);
             const year = date.getFullYear();

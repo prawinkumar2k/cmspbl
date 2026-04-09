@@ -1,6 +1,6 @@
 /**
- * Auth Controller — MongoDB version
- * Replaces MySQL queries with Mongoose operations
+ * Auth Controller
+ * MongoDB / Mongoose implementation
  */
 
 import bcrypt from 'bcryptjs';
@@ -11,6 +11,35 @@ import SidebarModule from '../models/SidebarModule.js';
 import ActivityLog from '../models/ActivityLog.js';
 import Student from '../models/Student.js';
 import Staff from '../models/Staff.js';
+
+const normalizeModuleKey = (value) =>
+  String(value || '')
+    .trim()
+    .replace(/\s+/g, ' ')
+    .toLowerCase();
+
+const parseModuleAccess = (rawValue) => {
+  if (Array.isArray(rawValue)) {
+    return rawValue
+      .map(value => String(value || '').trim())
+      .filter(Boolean);
+  }
+
+  return String(rawValue || '')
+    .split(',')
+    .map(value => value.trim())
+    .filter(Boolean);
+};
+
+const serializeSidebarModule = (module) => ({
+  id: module.id || module._id?.toString?.() || module.Id || null,
+  module_name: module.module_name ?? module.moduleName ?? '',
+  module_key: module.module_key ?? module.moduleKey ?? '',
+  module_category: module.module_category ?? module.moduleCategory ?? '',
+  module_path: module.module_path ?? module.modulePath ?? '',
+  display_order: module.display_order ?? module.displayOrder ?? 999,
+  is_active: module.is_active ?? module.isActive ?? true,
+});
 
 // ── Helper: Log activity ──────────────────────────────────────────────────────
 
@@ -58,7 +87,7 @@ export const login = async (req, res) => {
         return res.status(401).json({ error: 'Invalid register number or password' });
       }
 
-      // Students may have plain-text password (from legacy MySQL migration)
+      // Students may have plain-text password from older imported data
       let isPasswordValid = false;
       if (password === student.password) {
         isPasswordValid = true;
@@ -170,6 +199,7 @@ export const getSidebar = async (req, res) => {
   try {
     const userId = req.user.id;
     const userRole = req.user.role_name;
+    const tokenModules = parseModuleAccess(req.user.module_access);
 
     // Student has no sidebar (uses static sidebar)
     if (userRole?.toLowerCase() === 'student') {
@@ -179,28 +209,53 @@ export const getSidebar = async (req, res) => {
     // Admin gets ALL active modules
     if (userRole?.toLowerCase() === 'admin') {
       const allModules = await SidebarModule.find({ isActive: true })
-        .sort({ displayOrder: 1, moduleCategory: 1 });
-      return res.json({ success: true, data: allModules });
+        .sort({ displayOrder: 1, moduleCategory: 1 })
+        .lean();
+
+      const payload = allModules.map(serializeSidebarModule);
+      console.log('[sidebar] admin payload', {
+        userId,
+        role: userRole,
+        count: payload.length,
+      });
+
+      return res.json({ success: true, data: payload });
     }
 
-    // Other roles: filter by their moduleAccess array
-    const dbUser = await User.findById(userId).select('moduleAccess');
-    if (!dbUser) {
-      return res.status(404).json({ error: 'User not found' });
-    }
+    // Other roles: prefer DB access list, then fall back to JWT payload for legacy compatibility
+    const dbUser = await User.findById(userId).select('moduleAccess').lean();
+    const allowedModules = parseModuleAccess(dbUser?.moduleAccess).length > 0
+      ? parseModuleAccess(dbUser.moduleAccess)
+      : tokenModules;
 
-    const allowedModules = dbUser.moduleAccess || [];
     if (allowedModules.length === 0) {
+      console.warn('[sidebar] no allowed modules found', {
+        userId,
+        role: userRole,
+        dbUserFound: Boolean(dbUser),
+        tokenModuleCount: tokenModules.length,
+      });
       return res.json({ success: true, data: [] });
     }
 
-    // ✅ MongoDB: $in instead of MySQL FIND_IN_SET / IN (?,?,?)
-    const modules = await SidebarModule.find({
-      isActive: true,
-      moduleKey: { $in: allowedModules }
-    }).sort({ displayOrder: 1, moduleCategory: 1 });
+    const normalizedAllowed = new Set(allowedModules.map(normalizeModuleKey));
+    const allModules = await SidebarModule.find({ isActive: true })
+      .sort({ displayOrder: 1, moduleCategory: 1 })
+      .lean();
 
-    res.json({ success: true, data: modules });
+    const payload = allModules
+      .map(serializeSidebarModule)
+      .filter(module => normalizedAllowed.has(normalizeModuleKey(module.module_key)));
+
+    console.log('[sidebar] filtered payload', {
+      userId,
+      role: userRole,
+      allowedModules,
+      matchedCount: payload.length,
+      totalActiveModules: allModules.length,
+    });
+
+    res.json({ success: true, data: payload });
 
   } catch (error) {
     console.error('Error fetching sidebar modules:', error);

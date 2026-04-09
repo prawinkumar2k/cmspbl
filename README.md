@@ -1,6 +1,6 @@
 # SF ERP - Enterprise Resource Planning System
 
-SF ERP is a schools and colleges management system built with React, Node.js, and MySQL.
+SF ERP is a schools and colleges management system built with React, Node.js, and MongoDB.
 
 ## Quick Start (Docker)
 
@@ -26,7 +26,7 @@ Comprehensive documentation for all processes is available in the **`/documents`
 ## Tech Stack
 - **Frontend**: React, Vite, Bootstrap 5, Iconify
 - **Backend**: Node.js, Express, JWT, Bcrypt
-- **Database**: MySQL 8.0
+- **Database**: MongoDB
 - **Infrastructure**: Docker, Docker Compose, Nginx
 
 ## Contributing

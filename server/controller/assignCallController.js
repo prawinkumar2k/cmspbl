@@ -1,6 +1,6 @@
 /**
  * Assign Call Controller — MongoDB version
- * INFORMATION_SCHEMA.COLUMNS (dynamic column detection) → fixed Mongoose schema
+ * Uses fixed Mongoose schemas for callers, assigned calls, and student enquiries.
  * tenant_data → Caller model
  * tenant_details → AssignedCall model
  * student_enquiry → StudentEnquiry model
@@ -150,3 +150,4 @@ export const getAssignedCalls = async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 };
+

@@ -125,6 +125,7 @@ const studentSchema = new mongoose.Schema({
     regulation: { type: String }, classTeacher: { type: String },
     class: { type: String }, allocatedQuota: { type: String },
     academicYear: { type: String, index: true },
+    batch: { type: String, default: null, index: true },
 
     // Arrear / Subject registrations
     arrearSem1: { type: String, default: null },

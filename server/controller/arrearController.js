@@ -11,7 +11,7 @@ export const getArrearStudents = async (req, res) => {
         const students = await Student.find(filter)
             .select('registerNumber studentName photoPath arrearSem1 arrearSem2 arrearSem3 arrearSem4 arrearSem5 arrearSem6 arrearSem7 arrearSem8 _id');
 
-        // Return in old MySQL field format for frontend compat
+        // Return in legacy field format for frontend compatibility
         res.json(students.map(s => ({
             Id: s._id,
             Register_Number: s.registerNumber,
@@ -49,3 +49,4 @@ export const updateArrearMarks = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+

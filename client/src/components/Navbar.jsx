@@ -6,84 +6,34 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./css/style.css"; // custom styles
 
+const normalizeSidebarModuleRecord = (module) => ({
+  id: module?.id ?? module?._id ?? module?.Id ?? null,
+  module_name: module?.module_name ?? module?.moduleName ?? "",
+  module_key: module?.module_key ?? module?.moduleKey ?? "",
+  module_category: module?.module_category ?? module?.moduleCategory ?? "",
+  module_path: module?.module_path ?? module?.modulePath ?? "#",
+});
+
 const Navbar = () => {
-  const [isSidebarClosed, setIsSidebarClosed] = useState(false);
-  const [userProfile, setUserProfile] = useState(null);
+  const { userProfile, sidebarModules: globalModules, logout } = useAuth();
+  const navigate = useNavigate();
+
+  // Normalize modules from context for search functionality
+  const sidebarModules = React.useMemo(() => {
+    return Array.isArray(globalModules) ? globalModules.map(normalizeSidebarModuleRecord) : [];
+  }, [globalModules]);
+
+  // States
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
-  const [sidebarModules, setSidebarModules] = useState([]);
-  const { getAuthHeaders, logout } = useAuth();
-  const navigate = useNavigate();
-
-  // Fetch user profile and sidebar modules on mount
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const response = await fetch('/api/auth/profile', {
-          headers: getAuthHeaders()
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          // console.log('Profile API response:', result);
-          setUserProfile(result.data);
-        } else {
-          const errorData = await response.json();
-          console.error('Profile API error:', errorData);
-
-          // Fallback: Use data from AuthContext if API fails
-          const storedUser = localStorage.getItem('user');
-          if (storedUser) {
-            const userData = JSON.parse(storedUser);
-            setUserProfile({
-              staff_name: userData.staff_name,
-              role_name: userData.role_name,
-              staff_id: userData.staff_id,
-              photo: null // No photo available from stored data
-            });
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching user profile:', error);
-
-        // Fallback: Use data from AuthContext if API fails
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) {
-          const userData = JSON.parse(storedUser);
-          setUserProfile({
-            staff_name: userData.staff_name,
-            role_name: userData.role_name,
-            staff_id: userData.staff_id,
-            photo: null // No photo available from stored data
-          });
-        }
-      }
-    };
-
-    const fetchSidebarModules = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/api/auth/sidebar', {
-          headers: getAuthHeaders()
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          setSidebarModules(result.data || []);
-        }
-      } catch (error) {
-        console.error('Error fetching sidebar modules:', error);
-      }
-    };
-
-    fetchUserProfile();
-    fetchSidebarModules();
-  }, [getAuthHeaders]);
+  const [isSidebarClosed, setIsSidebarClosed] = useState(false);
 
   // Handle search input
   const handleSearchChange = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
+
 
     if (query.trim() === '') {
       setSearchResults([]);
@@ -93,9 +43,9 @@ const Navbar = () => {
 
     // Filter modules based on search query
     const filtered = sidebarModules.filter(module =>
-      module.module_name.toLowerCase().includes(query.toLowerCase()) ||
-      module.module_category.toLowerCase().includes(query.toLowerCase()) ||
-      module.module_key.toLowerCase().includes(query.toLowerCase())
+      module?.module_name?.toLowerCase().includes(query.toLowerCase()) ||
+      module?.module_category?.toLowerCase().includes(query.toLowerCase()) ||
+      module?.module_key?.toLowerCase().includes(query.toLowerCase())
     );
 
     setSearchResults(filtered);

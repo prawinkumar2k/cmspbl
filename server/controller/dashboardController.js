@@ -1,6 +1,6 @@
 /**
  * Dashboard Controller — MongoDB version
- * All MySQL VIEWs (overall_att_date_wise, dept_attendance_date_wise)
+ * Dashboard aggregations over attendance collections
  * are replaced with real-time aggregation pipelines on StudentAttendance.
  */
 import Student from '../models/Student.js';
@@ -131,7 +131,7 @@ export const getAttendanceTrend = async (req, res) => {
     const endDate = new Date(); endDate.setHours(23, 59, 59, 999);
     const startDate = new Date(); startDate.setDate(startDate.getDate() - days); startDate.setHours(0, 0, 0, 0);
 
-    // ✅ replaces: MySQL query on overall_att_date_wise with DATE_FORMAT
+    // ✅ replaces earlier SQL-style date aggregation
     const trend = await StudentAttendance.aggregate([
       { $match: { attDate: { $gte: startDate, $lte: endDate } } },
       {
@@ -173,7 +173,7 @@ export const getDeptAttendance = async (req, res) => {
     const today = getISTDate();
     const { start, end } = dayRange(req.query.date || today);
 
-    // ✅ replaces: dept_attendance_date_wise MySQL VIEW
+    // ✅ replaces earlier attendance summary view
     const deptAtt = await StudentAttendance.aggregate([
       { $match: { attDate: { $gte: start, $lte: end } } },
       {
@@ -264,3 +264,4 @@ export const getHealthStats = async (req, res) => {
 export const getQuickStats = async (req, res) => {
   return getDashboardStats(req, res);
 };
+

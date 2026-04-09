@@ -5,7 +5,7 @@ export const getExamTimetableStudentList = async (req, res) => {
   try {
     const rows = await ExamStudentList.find().sort({ createdAt: -1 });
 
-    // Map to old MySQL field names (if frontend expects snake_case based on original SELECT *)
+    // Map to legacy field names for frontend compatibility
     const mapped = rows.map(r => ({
       deptCode: r.deptCode,
       registerNumber: r.registerNumber,

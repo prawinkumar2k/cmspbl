@@ -285,8 +285,8 @@ const FeeDetails = () => {
                         className="form-select radius-8"
                       >
                         <option value="">Select Course</option>
-                        {courses.map((course) => (
-                          <option key={course.id} value={course.Course_Name}>
+                        {courses.map((course, index) => (
+                          <option key={`${course.id ?? course.Course_Name}-${index}`} value={course.Course_Name}>
                             {course.Course_Name}
                           </option>
                         ))}
@@ -304,8 +304,8 @@ const FeeDetails = () => {
                         disabled={!form.course}
                       >
                         <option value="">Select Department</option>
-                        {filteredDepartments.map((dept) => (
-                          <option key={dept.id} value={dept.Dept_Name}>
+                        {filteredDepartments.map((dept, index) => (
+                          <option key={`${dept.id ?? dept.Dept_Code ?? dept.Dept_Name}-${index}`} value={dept.Dept_Name}>
                             {dept.Dept_Name}
                           </option>
                         ))}
@@ -376,8 +376,8 @@ const FeeDetails = () => {
                         className="form-select radius-8"
                       >
                         <option value="">Select Fee Type</option>
-                        {feeTypes.map((fee) => (
-                          <option key={fee.id} value={fee.Fee_Type}>
+                        {feeTypes.map((fee, index) => (
+                          <option key={`${fee.id ?? fee.Fee_Type}-${index}`} value={fee.Fee_Type}>
                             {fee.Fee_Type}
                           </option>
                         ))}

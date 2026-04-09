@@ -1,8 +1,6 @@
 /**
  * Student Enquiry Controller — MongoDB version
- * MySQL LIKE % ? % → MongoDB $regex
- * DATE_SUB(NOW(), INTERVAL 7 DAY) → JS Date arithmetic
- * GROUP_CONCAT / COUNT GROUP BY → $group aggregation
+ * Uses regex filters, JS date arithmetic, and aggregation pipelines where needed.
  */
 import StudentEnquiry from '../models/StudentEnquiry.js';
 
@@ -49,7 +47,7 @@ export const searchStudentEnquiries = async (req, res) => {
     const { studentName, mobileNo, community, standard, district, studentRegNo } = req.query;
     const filter = {};
 
-    // ✅ MongoDB: $regex replaces MySQL LIKE %?%
+    // ✅ MongoDB regex text filtering
     if (studentName) filter.studentName = new RegExp(studentName, 'i');
     if (mobileNo) filter.mobileNo = new RegExp(mobileNo, 'i');
     if (community) filter.community = community;
@@ -123,7 +121,7 @@ export const getStudentEnquiryStatistics = async (req, res) => {
   try {
     const sevenDaysAgo = new Date(); sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-    // ✅ MongoDB aggregation replaces multiple MySQL GROUP BY queries
+    // ✅ MongoDB aggregation replaces grouped summary queries
     const [total, recentCount, byCommunity, byStandard, byDistrict] = await Promise.all([
       StudentEnquiry.countDocuments(),
       StudentEnquiry.countDocuments({ createdAt: { $gte: sevenDaysAgo } }),
@@ -153,8 +151,9 @@ export const bulkDeleteStudentEnquiries = async (req, res) => {
     const { ids } = req.body;
     if (!ids?.length) return res.status(400).json({ error: 'Invalid or empty IDs array' });
 
-    // ✅ MongoDB: deleteMany with $in replaces MySQL IN (?,?,?)
+    // ✅ MongoDB deleteMany with $in
     const result = await StudentEnquiry.deleteMany({ _id: { $in: ids } });
     res.json({ success: true, message: `${result.deletedCount} student enquiries deleted successfully`, deletedCount: result.deletedCount });
   } catch (err) { res.status(500).json({ error: err.message }); }
 };
+

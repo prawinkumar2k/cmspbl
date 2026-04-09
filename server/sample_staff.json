@@ -1,0 +1,32 @@
+﻿{
+  "_id": "699efc44a2410627df2db162",
+  "staffId": "GRTIPER1005",
+  "__v": 0,
+  "accountNumber": null,
+  "bankName": null,
+  "createdAt": "2026-02-25T13:42:28.887Z",
+  "deptCode": "5010",
+  "deptName": "B.PHARM (BACHELOR OF PHARMACY)",
+  "designation": null,
+  "email": null,
+  "gender": null,
+  "isActive": false,
+  "joiningDate": null,
+  "mobile": "8148640704",
+  "photo": "",
+  "qualification": "M.PHARM.,",
+  "relievingDate": null,
+  "salary": {
+    "basicSalary": 0,
+    "hra": 0,
+    "da": 0,
+    "ta": 0,
+    "specialAllowance": 0,
+    "pfDeduction": 0,
+    "esiDeduction": 0,
+    "professionalTax": 0,
+    "tds": 0
+  },
+  "staffName": "UDHAYAKUMAR E",
+  "updatedAt": "2026-02-25T14:59:06.787Z"
+}

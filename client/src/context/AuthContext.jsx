@@ -6,32 +6,8 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  // Check if user is already logged in (from localStorage)
-  useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    const storedUser = localStorage.getItem('user');
-    
-    if (storedToken && storedUser) {
-      setUser(JSON.parse(storedUser));
-      setIsAuthenticated(true);
-    }
-    setLoading(false);
-  }, []);
-
-  const login = (token, userData) => {
-    setIsAuthenticated(true);
-    setUser(userData);
-    localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(userData));
-  };
-
-  const logout = () => {
-    setIsAuthenticated(false);
-    setUser(null);
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-  };
+  const [sidebarModules, setSidebarModules] = useState([]);
+  const [userProfile, setUserProfile] = useState(null);
 
   // Helper function to get token for API calls
   const getToken = () => {
@@ -47,15 +23,79 @@ export const AuthProvider = ({ children }) => {
     };
   };
 
+  // Check if user is already logged in (from localStorage)
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    const storedUser = localStorage.getItem('user');
+    
+    if (storedToken && storedUser) {
+      setUser(JSON.parse(storedUser));
+      setIsAuthenticated(true);
+    }
+    setLoading(false);
+  }, []);
+
+  // Fetch shared data (sidebar and profile) when authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      const fetchGlobalData = async () => {
+        try {
+          const headers = getAuthHeaders();
+          
+          // Fetch Sidebar Modules
+          const sidebarRes = await fetch('/api/auth/sidebar', { headers });
+          if (sidebarRes.ok) {
+            const sidebarData = await sidebarRes.json();
+            setSidebarModules(Array.isArray(sidebarData?.data) ? sidebarData.data : []);
+          }
+
+          // Fetch User Profile if not already detailed
+          const profileRes = await fetch('/api/auth/profile', { headers });
+          if (profileRes.ok) {
+            const profileData = await profileRes.json();
+            setUserProfile(profileData.data);
+          }
+        } catch (error) {
+          console.error('Error fetching global auth data:', error);
+        }
+      };
+
+      fetchGlobalData();
+    } else {
+      setSidebarModules([]);
+      setUserProfile(null);
+    }
+  }, [isAuthenticated]);
+
+  const login = (token, userData) => {
+    setIsAuthenticated(true);
+    setUser(userData);
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(userData));
+  };
+
+  const logout = () => {
+    setIsAuthenticated(false);
+    setUser(null);
+    setSidebarModules([]);
+    setUserProfile(null);
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+  };
+
   return (
     <AuthContext.Provider value={{ 
       isAuthenticated, 
       user, 
+      userProfile,
+      sidebarModules,
       login, 
       logout, 
       loading,
       getToken,
-      getAuthHeaders
+      getAuthHeaders,
+      setSidebarModules,
+      setUserProfile
     }}>
       {children}
     </AuthContext.Provider>

@@ -10,23 +10,23 @@ const SubjectTable = ({ refreshTrigger, onEdit }) => {
 
   // Define table columns
   const columns = [
-    { accessorKey: 'Dept_Code', header: 'Department Code', cell: ({ row }) => <div className="fw-medium">{row.original.Dept_Code}</div> },
-    { accessorKey: 'Sub_Code', header: 'Subject Code', cell: ({ row }) => <div className="fw-medium">{row.original.Sub_Code}</div> },
-    { accessorKey: 'Sub_Name', header: 'Subject Name', cell: ({ row }) => <div className="fw-medium">{row.original.Sub_Name}</div> },
-    { accessorKey: 'Semester', header: 'Semester', cell: ({ row }) => <div className="fw-medium">{row.original.Semester}</div> },
-    { accessorKey: 'Col_No', header: 'Col No', cell: ({ row }) => <div className="fw-medium">{row.original.Col_No}</div> },
-    { accessorKey: 'Regulation', header: 'Regulation', cell: ({ row }) => <div className="fw-medium">{row.original.Regulation}</div> },
-    { accessorKey: 'Sub_Type', header: 'Type', cell: ({ row }) => <div className="fw-medium">{row.original.Sub_Type}</div> },
-    { accessorKey: 'Total_Hours', header: 'Total Hours', cell: ({ row }) => <div className="fw-medium">{row.original.Total_Hours}</div> },
-    { accessorKey: 'Elective', header: 'Elective', cell: ({ row }) => <div className="fw-medium">{row.original.Elective}</div> },
-    { accessorKey: 'Elective_No', header: 'Elective_No', cell: ({ row }) => <div className="fw-medium">{row.original.Elective_No}</div> },
-    { accessorKey: 'QPC', header: 'QPC', cell: ({ row }) => <div className="fw-medium">{row.original.QPC}</div> },
-    { accessorKey: 'Max_Mark', header: 'Max Mark', cell: ({ row }) => <div className="fw-medium">{row.original.Max_Mark}</div> },
-    { accessorKey: 'Pass_Mark', header: 'Pass Mark', cell: ({ row }) => <div className="fw-medium">{row.original.Pass_Mark}</div> },
-    { accessorKey: 'Internal_Max_Mark', header: 'Internal Max', cell: ({ row }) => <div className="fw-medium">{row.original.Internal_Max_Mark}</div> },
-    { accessorKey: 'Internal_Min_Mark', header: 'Internal Min', cell: ({ row }) => <div className="fw-medium">{row.original.Internal_Min_Mark}</div> },
-    { accessorKey: 'External_Max_Mark', header: 'External Max', cell: ({ row }) => <div className="fw-medium">{row.original.External_Max_Mark}</div> },
-    { accessorKey: 'External_Min_Mark', header: 'External Min', cell: ({ row }) => <div className="fw-medium">{row.original.External_Min_Mark}</div> },
+    { accessorKey: 'deptCode', header: 'Department Code', cell: ({ row }) => <div className="fw-medium">{row.original.deptCode || row.original.Dept_Code}</div> },
+    { accessorKey: 'subCode', header: 'Subject Code', cell: ({ row }) => <div className="fw-medium">{row.original.subCode || row.original.Sub_Code}</div> },
+    { accessorKey: 'subName', header: 'Subject Name', cell: ({ row }) => <div className="fw-medium">{row.original.subName || row.original.Sub_Name}</div> },
+    { accessorKey: 'semester', header: 'Semester', cell: ({ row }) => <div className="fw-medium">{row.original.semester || row.original.Semester}</div> },
+    { accessorKey: 'colNo', header: 'Col No', cell: ({ row }) => <div className="fw-medium">{row.original.colNo || row.original.Col_No}</div> },
+    { accessorKey: 'regulation', header: 'Regulation', cell: ({ row }) => <div className="fw-medium">{row.original.regulation || row.original.Regulation}</div> },
+    { accessorKey: 'subType', header: 'Type', cell: ({ row }) => <div className="fw-medium">{row.original.subType || row.original.Sub_Type}</div> },
+    { accessorKey: 'totalHours', header: 'Total Hours', cell: ({ row }) => <div className="fw-medium">{row.original.totalHours || row.original.Total_Hours}</div> },
+    { accessorKey: 'elective', header: 'Elective', cell: ({ row }) => <div className="fw-medium">{row.original.elective || row.original.Elective}</div> },
+    { accessorKey: 'electiveNo', header: 'Elective_No', cell: ({ row }) => <div className="fw-medium">{row.original.electiveNo || row.original.Elective_No}</div> },
+    { accessorKey: 'qpc', header: 'QPC', cell: ({ row }) => <div className="fw-medium">{row.original.qpc || row.original.QPC}</div> },
+    { accessorKey: 'maxMark', header: 'Max Mark', cell: ({ row }) => <div className="fw-medium">{row.original.maxMark || row.original.Max_Mark}</div> },
+    { accessorKey: 'minMark', header: 'Pass Mark', cell: ({ row }) => <div className="fw-medium">{row.original.minMark || row.original.Pass_Mark}</div> },
+    { accessorKey: 'internalMaxMark', header: 'Internal Max', cell: ({ row }) => <div className="fw-medium">{row.original.internalMaxMark || row.original.Internal_Max_Mark}</div> },
+    { accessorKey: 'internalMinMark', header: 'Internal Min', cell: ({ row }) => <div className="fw-medium">{row.original.internalMinMark || row.original.Internal_Min_Mark}</div> },
+    { accessorKey: 'externalMaxMark', header: 'External Max', cell: ({ row }) => <div className="fw-medium">{row.original.externalMaxMark || row.original.External_Max_Mark}</div> },
+    { accessorKey: 'externalMinMark', header: 'External Min', cell: ({ row }) => <div className="fw-medium">{row.original.externalMinMark || row.original.External_Min_Mark}</div> },
   ];
 
   useEffect(() => {
@@ -36,9 +36,10 @@ const SubjectTable = ({ refreshTrigger, onEdit }) => {
         const res = await fetch('/api/subject');
         if (!res.ok) throw new Error('Failed to fetch subjects');
         const data = await res.json();
-        setSubjects(data);
+        setSubjects(Array.isArray(data) ? data : []);
         setError(null);
       } catch (err) {
+        setSubjects([]);
         setError('Failed to fetch subjects data');
       } finally {
         setLoading(false);
@@ -53,6 +54,7 @@ const SubjectTable = ({ refreshTrigger, onEdit }) => {
   };
 
   const handleDelete = async (subject) => {
+    const id = subject._id || subject.id;
     toast.dismiss();
     const toastId = toast(
       ({ closeToast }) => (
@@ -63,9 +65,9 @@ const SubjectTable = ({ refreshTrigger, onEdit }) => {
               style={{ background: '#d32f2f', color: 'white', border: 'none', padding: '4px 12px', borderRadius: 4 }}
               onClick={async () => {
                 try {
-                  const res = await fetch(`/api/subject/${subject.id}`, { method: 'DELETE' });
+                  const res = await fetch(`/api/subject/${id}`, { method: 'DELETE' });
                   if (!res.ok) throw new Error('Delete failed');
-                  setSubjects(prev => prev.filter(s => s.id !== subject.id));
+                  setSubjects(prev => prev.filter(s => (s._id || s.id) !== id));
                   toast.success('Subject deleted successfully');
                 } catch (err) {
                   toast.error('Failed to delete subject');
@@ -95,7 +97,7 @@ const SubjectTable = ({ refreshTrigger, onEdit }) => {
         onEdit={handleEdit}
         onDelete={handleDelete}
         enableExport={false}
-        enableSElectivetion={true}
+        enableSelection={true}
         pageSize={10}
       />
     </div>

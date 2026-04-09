@@ -1,5 +1,5 @@
-import db from '../db.js';
 import bcrypt from 'bcryptjs';
+import User from '../models/User.js';
 
 /**
  * This script will check all users and hash any plain text passwords
@@ -8,13 +8,9 @@ import bcrypt from 'bcryptjs';
 
 async function hashExistingPasswords() {
   try {
-    // Wait for database connection
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
     console.log('🔄 Checking for users with unhashed passwords...');
     
-    // Get all users
-    const [users] = await db.query('SELECT id, username, password FROM users');
+    const users = await User.find({}, 'username password').lean();
     
     console.log(`📊 Found ${users.length} users in database`);
     
@@ -37,9 +33,9 @@ async function hashExistingPasswords() {
         const hashedPassword = await bcrypt.hash(user.password, 10);
         
         // Update in database
-        await db.query(
-          'UPDATE users SET password = ? WHERE id = ?',
-          [hashedPassword, user.id]
+        await User.updateOne(
+          { _id: user._id },
+          { $set: { password: hashedPassword } }
         );
         
         console.log(`✅ Updated password for user "${user.username}"`);

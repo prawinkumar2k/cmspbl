@@ -50,13 +50,24 @@ const Subject = () => {
           fetch('/api/subject/master/semester'),
           fetch('/api/subject/master/subject-type'),
         ]);
-        setDeptCode(await deptRes.json());
-        setElectiveOptions(await electiveRes.json());
-        setRegulationOptions(await regulationRes.json());
-        setSemesterOptions(await semesterRes.json());
-        setTypeOptions(await typeRes.json());
+
+        const deptData = await deptRes.json();
+        const electiveData = await electiveRes.json();
+        const regulationData = await regulationRes.json();
+        const semesterData = await semesterRes.json();
+        const typeData = await typeRes.json();
+
+        setDeptCode(Array.isArray(deptData) ? deptData : []);
+        setElectiveOptions(Array.isArray(electiveData) ? electiveData : []);
+        setRegulationOptions(Array.isArray(regulationData) ? regulationData : []);
+        setSemesterOptions(Array.isArray(semesterData) ? semesterData : []);
+        setTypeOptions(Array.isArray(typeData) ? typeData : []);
       } catch (err) {
-        // Optionally handle error
+        setDeptCode([]);
+        setElectiveOptions([]);
+        setRegulationOptions([]);
+        setSemesterOptions([]);
+        setTypeOptions([]);
       }
     };
     fetchMasterData();
@@ -229,24 +240,24 @@ const Subject = () => {
 
   // Edit handler (called from SubjectTable)
   const handleEdit = (subject) => {
-    setdepartment(subject.Dept_Code || "");
-    setSubjectCode(subject.Sub_Code || "");
-    setSubjectName(subject.Sub_Name || "");
-    setSem(subject.Semester || "");
-    setColNo(subject.Col_No || "");
-    setRegl(subject.Regulation || "");
-    setType(subject.Sub_Type || "");
-    setElec(subject.Elective_No || "");
-    setElective(subject.Elective || "");
-    setQPC(subject.QPC || "");
-    setTotalHours(subject.Total_Hours || "");
-    setMaxMark(subject.Max_Mark || "");
-    setPassMark(subject.Pass_Mark || "");
-    setInternalMaxMark(subject.Internal_Max_Mark || "");
-    setInternalMinMark(subject.Internal_Min_Mark || "");
-    setExternalMaxMark(subject.External_Max_Mark || "");
-    setExternalMinMark(subject.External_Min_Mark || "");
-    setEditId(subject.id);
+    setdepartment(subject.deptCode || subject.Dept_Code || "");
+    setSubjectCode(subject.subCode || subject.Sub_Code || "");
+    setSubjectName(subject.subName || subject.Sub_Name || "");
+    setSem(subject.semester || subject.Semester || "");
+    setColNo(subject.colNo || subject.Col_No || "");
+    setRegl(subject.regulation || subject.Regulation || "");
+    setType(subject.subType || subject.Sub_Type || "");
+    setElec(subject.electiveNo || subject.Elective_No || "");
+    setElective(subject.elective || subject.Elective || "");
+    setQPC(subject.qpc || subject.QPC || "");
+    setTotalHours(subject.totalHours || subject.Total_Hours || "");
+    setMaxMark(subject.maxMark || subject.Max_Mark || "");
+    setPassMark(subject.minMark || subject.Pass_Mark || "");
+    setInternalMaxMark(subject.internalMaxMark || subject.Internal_Max_Mark || "");
+    setInternalMinMark(subject.internalMinMark || subject.Internal_Min_Mark || "");
+    setExternalMaxMark(subject.externalMaxMark || subject.External_Max_Mark || "");
+    setExternalMinMark(subject.externalMinMark || subject.External_Min_Mark || "");
+    setEditId(subject._id || subject.id);
     setSubjectCodeExists(false);
   };
 
@@ -489,6 +500,7 @@ const Subject = () => {
                               className="form-control radius-8"
                               value={internalMaxMark}
                               placeholder="Enter Internal Max Mark"
+                              readOnly
                             />
                           </div>
 
@@ -501,6 +513,7 @@ const Subject = () => {
                               className="form-control radius-8"
                               value={internalMinMark}
                               placeholder="Enter Internal Min Mark"
+                              readOnly
                             />
                             {/* <small className="text-muted">Auto-calculated: Fixed value 9</small> */}
                           </div>
@@ -514,6 +527,7 @@ const Subject = () => {
                               className="form-control radius-8"
                               value={externalMaxMark}
                               placeholder="Enter External Max Mark"
+                              readOnly
                             />
                             {/* <small className="text-muted">Auto-calculated: 3/4 × Max Mark</small> */}
                           </div>
@@ -527,6 +541,7 @@ const Subject = () => {
                               className="form-control radius-8"
                               value={externalMinMark}
                               placeholder="Enter External Min Mark"
+                              readOnly
                             />
                             {/* <small className="text-muted">Auto-calculated: Pass Mark - Internal Min Mark</small> */}
                           </div>

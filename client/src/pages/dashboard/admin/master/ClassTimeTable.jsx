@@ -12,6 +12,10 @@ const DAYS_OPTIONS = [
   { label: "Mon–Sat", value: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] },
 ];
 
+const READ_ONLY_INPUT_STYLE = {
+  backgroundColor: "#f8f9fa",
+};
+
 // TimetableInputForm Component (fix dropdown resets)
 function TimetableInputForm({ onSubmit }) {
   // Form states
@@ -308,6 +312,7 @@ function TimetableInputForm({ onSubmit }) {
                 value={selectedDeptCode}
                 readOnly
                 placeholder="Auto"
+                style={READ_ONLY_INPUT_STYLE}
               />
             </div>
             <div className="col-12 col-md-3">
@@ -321,8 +326,8 @@ function TimetableInputForm({ onSubmit }) {
                 required
               >
                 <option value="">Select Semester</option>
-                {semesters.map(sem => (
-                  <option key={sem.id} value={sem.Semester}>
+                {semesters.map((sem, index) => (
+                  <option key={`${sem.id ?? sem.Semester}-${index}`} value={sem.Semester}>
                     {sem.Semester}
                   </option>
                 ))}
@@ -339,6 +344,7 @@ function TimetableInputForm({ onSubmit }) {
                 readOnly
                 placeholder="Auto"
                 required
+                style={READ_ONLY_INPUT_STYLE}
               />
             </div>
             <div className="col-12 col-md-3">
@@ -352,8 +358,8 @@ function TimetableInputForm({ onSubmit }) {
                 required
               >
                 <option value="">Select Regulation</option>
-                {regulations.map(reg => (
-                  <option key={reg.id} value={reg.Regulation}>
+                {regulations.map((reg, index) => (
+                  <option key={`${reg.id ?? reg.Regulation}-${index}`} value={reg.Regulation}>
                     {reg.Regulation}
                   </option>
                 ))}

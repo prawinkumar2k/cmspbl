@@ -10,7 +10,7 @@ import Semester from '../models/Semester.js';
 import Regulation from '../models/Regulation.js';
 import Subject from '../models/Subject.js';
 
-// ── Helper: map MySQL PascalCase body keys → camelCase Mongoose fields ─────────
+// Helper: map legacy PascalCase body keys to camelCase Mongoose fields.
 const fromBody = (body) => ({
 	staffId: body.Staff_Id || body.staffId,
 	staffName: body.Staff_Name || body.staffName,
@@ -125,3 +125,4 @@ export const getSubjectsFiltered = async (req, res) => {
 		res.json(subjects.map(s => ({ Sub_Name: s.subName, Sub_Code: s.subCode })));
 	} catch (err) { res.status(500).json({ error: err.message }); }
 };
+

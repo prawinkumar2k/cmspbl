@@ -6,17 +6,20 @@ import {
   deleteQuotaAllocation,
   getQuotaByDept
 } from "../controller/quotaAllocationController.js";
-import db from "../db.js";
+import Course from "../models/Course.js";
 
 const router = express.Router();
 
 // API to get course list from course_master for course dropdown
 router.get("/course-list", async (req, res) => {
   try {
-    const [rows] = await db.query(
-      "SELECT Course_Name FROM course_master ORDER BY Course_Name"
-    );
-    res.json(rows);
+    const courseNames = (await Course.distinct("courseName"))
+      .filter(Boolean)
+      .sort((a, b) => a.localeCompare(b));
+
+    res.json(courseNames.map((courseName) => ({
+      Course_Name: courseName,
+    })));
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch course list" });
   }
@@ -28,12 +31,27 @@ router.get("/course-list", async (req, res) => {
 // GoiQuota, MgtQuota, Intake, etc.).
 router.get("/course-details", async (req, res) => {
   try {
-    const [rows] = await db.query(
-      `SELECT Dept_Code, Dept_Name, Course_Name, Intake, OC, BC, BCO, BCM, MBC_DNC, SC, SCA, ST, Other, GoiQuota, MgtQuota
-       FROM course_details
-       ORDER BY Course_Name, Dept_Name`
-    );
-    res.json(rows);
+    const rows = await Course.find()
+      .sort({ courseName: 1, deptName: 1 })
+      .lean();
+
+    res.json(rows.map((row) => ({
+      Dept_Code: row.deptCode,
+      Dept_Name: row.deptName,
+      Course_Name: row.courseName,
+      Intake: row.intake ?? 0,
+      OC: row.oc ?? 0,
+      BC: row.bc ?? 0,
+      BCO: row.bco ?? 0,
+      BCM: row.bcm ?? 0,
+      MBC_DNC: row.mbcDnc ?? 0,
+      SC: row.sc ?? 0,
+      SCA: row.sca ?? 0,
+      ST: row.st ?? 0,
+      Other: row.other ?? 0,
+      GoiQuota: row.goiQuota ?? 0,
+      MgtQuota: row.mgtQuota ?? 0,
+    })));
   } catch (err) {
     console.error('Failed to fetch course details', err);
     res.status(500).json({ error: "Failed to fetch course details" });

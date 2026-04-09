@@ -43,6 +43,13 @@ const staffSchema = new mongoose.Schema({
     // Embedded salary structure (replaces hr_staff_salary JOIN)
     salary: { type: salarySchema, default: () => ({}) },
 
-}, { timestamps: true });
+    // Legacy field name support
+    Staff_ID: { type: String, trim: true },
+    Staff_Name: { type: String, trim: true },
+    Dept_Name: { type: String, trim: true },
+    Dept_Code: { type: String, trim: true },
+    Designation: { type: String, trim: true },
+
+}, { timestamps: true, strict: false });
 
 export default mongoose.model('Staff', staffSchema);

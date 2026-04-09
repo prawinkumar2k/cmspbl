@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import db from '../db.js';
+import Course from '../models/Course.js';
 
 const router = Router();
 
@@ -10,17 +10,41 @@ router.get('/', async (req, res) => {
   // If course and department are provided, return specific course details
   if (course && department) {
     try {
-      const [rows] = await db.query(
-        'SELECT * FROM course_details WHERE Course_Name = ? AND Dept_Name = ? LIMIT 1',
-        [course, department]
-      );
-      if (rows.length === 0) {
+      const details = await Course.findOne({
+        courseName: course,
+        deptName: department,
+      }).lean();
+
+      if (!details) {
         return res.status(404).json({ error: 'Course/Department not found' });
       }
-      const details = rows[0];
+
       return res.json({
-        code: details.Dept_Code,
-        details
+        code: details.deptCode,
+        details: {
+          Dept_Code: details.deptCode,
+          Dept_Name: details.deptName,
+          Course_Name: details.courseName,
+          Course_Mode: details.courseMode,
+          Year_Of_Course: details.yearOfCourse,
+          Dept_Order: details.deptOrder,
+          AICTE_Approval: details.aicteApproval,
+          AICTE_Approval_No: details.aicteApprovalNo,
+          Intake: details.intake,
+          AddlSeats: details.addlSeats,
+          OC: details.oc,
+          BC: details.bc,
+          BCO: details.bco,
+          BCM: details.bcm,
+          MBC_DNC: details.mbcDnc,
+          SC: details.sc,
+          SCA: details.sca,
+          ST: details.st,
+          Other: details.other,
+          GoiQuota: details.goiQuota,
+          MgtQuota: details.mgtQuota,
+          Ins_Type: details.insType,
+        }
       });
     } catch (err) {
       return res.status(500).json({ error: err.message });
@@ -29,8 +53,9 @@ router.get('/', async (req, res) => {
   
   // If no parameters, return all unique departments
   try {
-    const [rows] = await db.query('SELECT DISTINCT Dept_Name FROM course_details ORDER BY Dept_Name');
-    const departments = rows.map(row => row.Dept_Name);
+    const departments = (await Course.distinct('deptName'))
+      .filter(Boolean)
+      .sort((a, b) => a.localeCompare(b));
     res.json(departments);
   } catch (err) {
     res.status(500).json({ error: err.message });

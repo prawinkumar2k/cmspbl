@@ -139,7 +139,7 @@ export class DatabaseError extends AppError {
     this.name = 'DatabaseError';
     this.originalError = originalError;
     
-    // Map MySQL error codes to our error codes
+// Map database error codes to our error codes
     if (originalError?.code === 'ER_DUP_ENTRY') {
       this.code = ErrorCodes.VALIDATION_DUPLICATE.code;
       this.httpStatus = ErrorCodes.VALIDATION_DUPLICATE.httpStatus;

@@ -21,7 +21,7 @@ export const getStudentsByAllocation = async (req, res) => {
       .select('rollNumber registerNumber studentName class classTeacher')
       .sort({ rollNumber: 1 });
 
-    // Return in MySQL field name format for frontend compat
+    // Return in legacy field name format for frontend compatibility
     res.json(students.map(s => ({
       Roll_Number: s.rollNumber,
       Register_Number: s.registerNumber,
@@ -39,10 +39,18 @@ export const getStaffByDepartment = async (req, res) => {
       return res.status(400).json({ error: 'Course_Name and Dept_Code are required' });
     }
 
-    const staff = await Staff.find({ deptCode: Dept_Code })
-      .select('staffId staffName designation').sort({ staffId: 1 }).distinct;
+    const staff = await Staff.find({ 
+      $or: [{ deptCode: Dept_Code }, { Dept_Code: Dept_Code }] 
+    })
+      .select('staffId staffName designation Staff_ID Staff_Name Designation')
+      .sort({ staffId: 1 })
+      .lean();
 
-    res.json(staff.map(s => ({ Staff_ID: s.staffId, Staff_Name: s.staffName, Designation: s.designation })));
+    res.json(staff.map(s => ({
+      Staff_ID: s.staffId || s.Staff_ID || '',
+      Staff_Name: s.staffName || s.Staff_Name || '',
+      Designation: s.designation || s.Designation || ''
+    })));
   } catch (err) { res.status(500).json({ error: err.message }); }
 };
 
@@ -77,7 +85,7 @@ export const updateStudentsClassInfo = async (req, res) => {
       return res.status(400).json({ error: 'Section, Class Teacher, Course Name, and Dept Code are required' });
     }
 
-    // ✅ MongoDB: $in replaces MySQL IN (?,?,?)
+    // Use $in to update the selected set of students in one operation.
     const result = await Student.updateMany(
       { rollNumber: { $in: rollNumbers }, courseName, deptCode },
       { $set: { class: section, classTeacher } }

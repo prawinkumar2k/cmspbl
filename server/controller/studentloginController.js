@@ -8,7 +8,7 @@ export const getAdmittedStudents = async (req, res) => {
 
         const processed = students.map(s => ({
             ...s.toObject(),
-            // Match old MySQL field names for frontend compat
+            // Match legacy field names for frontend compatibility
             Id: s._id,
             Dept_Name: s.deptName?.includes('(') ? s.deptName.split('(')[0].trim() : s.deptName,
             Dept_Code: s.deptCode,
@@ -41,3 +41,4 @@ export const updateStudentPassword = async (req, res) => {
         res.status(500).json({ error: 'Failed to update password' });
     }
 };
+

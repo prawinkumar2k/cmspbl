@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 /**
  * Payroll model — replaces hr_payroll table
- * Compound unique index replaces MySQL ON DUPLICATE KEY UPDATE
+ * Compound unique index for payroll uniqueness
  */
 const payrollSchema = new mongoose.Schema({
     // References
@@ -33,7 +33,7 @@ const payrollSchema = new mongoose.Schema({
     paidDate: { type: Date, default: null },
 }, { timestamps: true });
 
-// Compound unique index — replaces MySQL ON DUPLICATE KEY UPDATE
+// Compound unique index for upsert-style payroll writes
 payrollSchema.index({ staffId: 1, month: 1, year: 1 }, { unique: true });
 payrollSchema.index({ month: 1, year: 1 });
 

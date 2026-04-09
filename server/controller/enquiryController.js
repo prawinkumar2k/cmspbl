@@ -12,7 +12,7 @@ export const getAllEnquiries = async (req, res) => {
 
 export const getTodaysEnquiries = async (req, res) => {
   try {
-    // ✅ MongoDB: $gte/$lte for today replaces MySQL: DATE(CONVERT_TZ(...)) = CURDATE()
+    // ✅ MongoDB date-range filtering for today
     const now = new Date();
     const start = new Date(now); start.setHours(0, 0, 0, 0);
     const end = new Date(now); end.setHours(23, 59, 59, 999);
@@ -55,3 +55,4 @@ export const deleteEnquiry = async (req, res) => {
     res.status(500).json({ error: 'Failed to delete enquiry' });
   }
 };
+

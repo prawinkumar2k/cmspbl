@@ -9,6 +9,8 @@ import { Toaster } from 'react-hot-toast';
 
 // Admin Dashboard
 import AdminDashboard from "./pages/dashboard/admin/adminDashboard";
+import SubjectTable from "./pages/dashboard/admin/master/SubjectTable";
+import BatchAllocation from "./pages/dashboard/admin/master/BatchAllocation";
 import UserCreation from "./pages/dashboard/admin/UserCreation";
 import LoginDetails from "./pages/dashboard/admin/loginDetails";
 import StudentLogin from "./pages/dashboard/admin/studentLogin";
@@ -196,6 +198,7 @@ const App = () => {
             <Route path="/admin/master/branch" element={<ProtectedRoute><Branch /></ProtectedRoute>} />
             <Route path="/admin/master/subject" element={<ProtectedRoute><Subject /></ProtectedRoute>} />
             <Route path="/admin/master/subjectAllocation" element={<ProtectedRoute><SubjectAllocation /></ProtectedRoute>} />
+            <Route path="/admin/master/batchAllocation" element={<ProtectedRoute><BatchAllocation /></ProtectedRoute>} />
             <Route path="/admin/master/classAllocation" element={<ProtectedRoute><ClassAllocation /></ProtectedRoute>} />
             <Route path="/admin/master/academicCalendar" element={<ProtectedRoute><AcademicCalendar /></ProtectedRoute>} />
             <Route path="/admin/master/StaffDetails" element={<ProtectedRoute><StaffDetails /></ProtectedRoute>} />

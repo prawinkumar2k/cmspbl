@@ -1,6 +1,6 @@
 /**
  * Centralized Configuration Management
- * Updated for MongoDB — MySQL config removed
+ * Centralized MongoDB configuration
  */
 
 import dotenv from 'dotenv';
@@ -32,7 +32,7 @@ const config = {
     shutdownTimeout: parseInt(process.env.SHUTDOWN_TIMEOUT, 10) || 30000,
   },
 
-  // ✅ MongoDB Configuration (replaces MySQL config)
+  // MongoDB Configuration
   database: {
     uri: process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/cms_db',
   },
@@ -56,8 +56,8 @@ const config = {
   // CORS Configuration
   cors: {
     origins: process.env.CORS_ORIGINS
-      ? process.env.CORS_ORIGINS.split(',')
-      : ['http://localhost:5000', 'http://localhost:5173', 'http://localhost:5174', 'http://localhost:80'],
+      ? process.env.CORS_ORIGINS.split(',').map(origin => origin.trim()).filter(Boolean)
+      : [],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-ID', 'X-Correlation-ID'],
     exposedHeaders: ['X-Request-ID', 'X-RateLimit-Limit', 'X-RateLimit-Remaining'],

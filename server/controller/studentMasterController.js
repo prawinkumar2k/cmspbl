@@ -377,7 +377,7 @@ export const getStrengthList = async (req, res) => {
         const filter = { admissionStatus: 'Admitted' };
         if (academicYear) filter.academicYear = academicYear;
 
-        // ✅ MongoDB aggregation replaces MySQL GROUP BY + COUNT
+        // ✅ MongoDB aggregation for grouped counts
         const strength = await Student.aggregate([
             { $match: filter },
             {
@@ -432,7 +432,7 @@ export const searchStudents = async (req, res) => {
         const { q } = req.query;
         if (!q || q.length < 2) return res.json([]);
 
-        // ✅ MongoDB: text search with regex (replace MySQL LIKE %?%)
+        // ✅ MongoDB regex-based text search
         const regex = new RegExp(q, 'i');
         const students = await Student.find({
             $or: [
@@ -546,3 +546,4 @@ export const deleteStudentEducationByAppNo = async (req, res) => {
         res.json({ success: true, message: 'Education details cleared' });
     } catch (err) { res.status(500).json({ error: err.message }); }
 };
+

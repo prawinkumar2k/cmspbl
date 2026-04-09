@@ -74,7 +74,7 @@ export const getLeaveStats = async (req, res) => {
             };
         }
 
-        // ✅ MongoDB aggregation replaces MySQL GROUP BY + COUNT + SUM
+        // ✅ MongoDB aggregation for grouped counts + SUM
         const stats = await Leave.aggregate([
             { $match: filter },
             {
@@ -124,3 +124,4 @@ export const getLeaveTypes = async (req, res) => {
     const types = ['Casual Leave (CL)', 'Sick Leave (SL)', 'Privilege Leave (PL)', 'On Duty (OD)', 'Maternity Leave', 'Other'];
     res.json(types.map(t => ({ Leave_Type: t })));
 };
+

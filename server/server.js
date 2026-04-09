@@ -16,8 +16,22 @@ await db.initialize();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const allowedOrigins = process.env.CORS_ORIGINS
+  ? process.env.CORS_ORIGINS.split(',').map(origin => origin.trim()).filter(Boolean)
+  : [];
+
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:5000', 'http://localhost:5173', 'http://localhost:5174'],
+  origin: (origin, callback) => {
+    if (!origin) {
+      return callback(null, true);
+    }
+
+    if (!allowedOrigins.length || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error(`Origin ${origin} not allowed by CORS`));
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -36,8 +50,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// IMPORTANT: Static file serving moved to after API routes (line ~320)
-// app.use(express.static(path.join(__dirname, "../client/dist")));
 // ------------------------------
 // Master Table / Admin Master Routes
 // ------------------------------
@@ -78,7 +90,6 @@ app.use('/api/courseFees', courseFeesRoutes);
 app.use('/api/classAllocation', classAllocationRoutes);
 app.use('/api/classTimeTable', classTimeTableRoutes);
 
-
 // ------------------------------
 // Administrator Routes
 // ------------------------------
@@ -93,6 +104,7 @@ import feeCollectionRoutes from './routes/feeCollection.js';
 import settlementRoutes from './routes/settlementRoutes.js';
 import transportRoutes from './routes/transport.js';
 import transportEntryRoutes from './routes/transportEntryRoutes.js';
+import batchAllocationRoutes from './routes/batchAllocation.js';
 import studentFeeMasterRoutes from './routes/studentFeeMaster.js';
 import incomeExpenseRoutes from './routes/incomeExpense.js';
 import incomeExpenseMasterRoutes from './routes/incomeExpenseMaster.js';
@@ -108,6 +120,7 @@ app.use('/api/feeCollection', feeCollectionRoutes);
 app.use('/api/settlements', settlementRoutes);
 app.use('/api/transport', transportRoutes);
 app.use('/api/transport/entries', transportEntryRoutes);
+app.use('/api', batchAllocationRoutes);
 app.use('/api/studentFeeMaster', studentFeeMasterRoutes);
 app.use("/api/income-expense", incomeExpenseRoutes);
 app.use("/api/income-expense-master", incomeExpenseMasterRoutes);
@@ -116,8 +129,12 @@ app.use("/api/income-expense-master", incomeExpenseMasterRoutes);
 // HR Routes
 // ------------------------------
 import hrLeaveRoutes from './routes/hrLeave.js';
+import hrAttendanceRoutes from './routes/hrAttendance.js';
+import hrPayrollRoutes from './routes/hrPayroll.js';
+
 app.use('/api/hr', hrLeaveRoutes);
-console.log('HR Routes mounted at /api/hr');
+app.use('/api/hr/attendance', hrAttendanceRoutes);
+app.use('/api/hr/payroll', hrPayrollRoutes);
 
 // ------------------------------
 // Academic / Attendance Configuration Routes
@@ -142,7 +159,6 @@ app.use('/api/unitTest', unitTestRoutes);
 app.use('/api/practicalMarks', practicalMarksRoutes);
 app.use('/api/UNIVMarkEntry', UNIVMarkEntryRoutes);
 
-
 // ------------
 // Examination Routes
 import hallRoutes from './routes/hall.js';
@@ -152,7 +168,6 @@ import strengthListRoutes from './routes/strengthlist.js';
 import checklistRoutes from './routes/checklist.js';
 import examGenerationRoutes from './routes/examGeneration.js';
 import practicalPanelRoutes from './routes/practicalPanel.js';
-
 import practicalTimetableRoutes from './routes/Practicaltimetable.js';
 import seatAllocationRoutes from './routes/seatAllocation.js';
 import daywarStatementRoutes from './routes/daywarStatement.js';
@@ -162,16 +177,12 @@ import examTimetableRoutes from './routes/examTimetable.js';
 import examAttendanceRoute from "./routes/examAttendance.js";
 import practicalExamRoutes from "./routes/practicalExam.js";
 
-
-
-// Examination api's
 app.use('/api/hall', hallRoutes);
 app.use('/api/timetable', timetableRoutes);
 app.use('/api/qpRequirement', qpRequirementRoutes);
 app.use('/api/strengthlist', strengthListRoutes);
 app.use('/api/checklist', checklistRoutes);
 app.use('/api/examGeneration', examGenerationRoutes);
-// Alias for legacy/client path: mount the same routes under /api/examSeatAllocation
 app.use('/api/examSeatAllocation', examGenerationRoutes);
 app.use('/api/practical-panel', practicalPanelRoutes);
 app.use('/api/practicalTimetable', practicalTimetableRoutes);
@@ -199,7 +210,7 @@ app.use('/api/arrear', arrearRoutes);
 // Staff / Admin Staff Routes
 // ------------------------------
 import staffRoutes from './routes/staff.js';
-app.use('/api', staffRoutes); // You might want to change prefix if needed
+app.use('/api', staffRoutes);
 
 // ------------------------------
 // Authentication Routes
@@ -246,7 +257,6 @@ app.use('/api/enquiry', enquiryRoutes);
 import courseDetailsRoutes from './routes/courseDetails.js';
 app.use('/api/courseDetails', courseDetailsRoutes);
 
-
 // ------------------------------
 // Dashboard Routes
 // ------------------------------
@@ -261,22 +271,9 @@ import studentPortalRoutes from './routes/studentPortal.js';
 app.use('/api/student-login', studentLoginRoutes);
 app.use('/api/student-portal', studentPortalRoutes);
 
-
-// ------------------------------
-// HR Module Routes
-// ------------------------------
-import hrAttendanceRoutes from './routes/hrAttendance.js';
-import hrPayrollRoutes from './routes/hrPayroll.js';
-
-app.use('/api/hr/attendance', hrAttendanceRoutes);
-app.use('/api/hr/payroll', hrPayrollRoutes);
-// Note: staff_master routes are mounted under /api/ via staffRoutes at line ~205
-
-
 // Placement Routes
 import placementRoutes from './routes/placementRoutes.js';
 app.use('/api/placement', placementRoutes);
-
 
 // ------------------------------
 // Certificates / TC Routes
@@ -288,32 +285,22 @@ app.use('/api/tc', tcRoutes);
 import consolidateReportRoutes from './routes/consolidateReportRoutes.js';
 app.use('/api/consolidateReport', consolidateReportRoutes);
 
-// Static Assets - Serve React build files (AFTER all API routes)
+// Static Assets
 app.use(express.static(path.join(__dirname, '../client/dist')));
-
-// Serve from client/public/assets so book cover images are accessible
 app.use('/assets', express.static(path.join(__dirname, '../client/public/assets')));
 
-// ------------------------------
 // Health Check
-// ------------------------------
 app.get('/api/health', (req, res) => {
   res.send({ status: 'Server is healthy' });
 });
 
-// Serve React App for any other route (SPA)
+// SPA catch-all
 app.get(/.*/, (req, res, next) => {
-  // Skip API routes to allow 404s for them
   if (req.path.startsWith("/api")) return next();
-  // Skip files with extensions (should be handled by express.static)
   if (req.path.includes(".")) return next();
-
   res.sendFile(path.join(__dirname, "../client/dist/index.html"));
 });
 
-// ------------------------------
-// Start Server
-// ------------------------------
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });

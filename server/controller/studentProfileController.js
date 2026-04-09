@@ -1,6 +1,6 @@
 import Student from '../models/Student.js';
 
-// Field mapping: MySQL PascalCase → MongoDB camelCase
+// Field mapping: legacy PascalCase -> MongoDB camelCase
 const FIELD_MAP = {
     Student_Name: 'studentName', Dob: 'dob', Gender: 'gender', Blood_Group: 'bloodGroup',
     Nationality: 'nationality', Religion: 'religion', Community: 'community', Caste: 'caste',
@@ -31,10 +31,9 @@ export const updateStudentProfile = async (req, res) => {
         const updateData = req.body;
 
         // Only allow whitelisted fields to be updated
-        const allowedMysqlKeys = Object.keys(FIELD_MAP);
         const updates = {};
-        for (const [mysqlKey, mongoKey] of Object.entries(FIELD_MAP)) {
-            if (mysqlKey in updateData) updates[mongoKey] = updateData[mysqlKey];
+        for (const [legacyKey, mongoKey] of Object.entries(FIELD_MAP)) {
+            if (legacyKey in updateData) updates[mongoKey] = updateData[legacyKey];
         }
 
         if (Object.keys(updates).length === 0) {

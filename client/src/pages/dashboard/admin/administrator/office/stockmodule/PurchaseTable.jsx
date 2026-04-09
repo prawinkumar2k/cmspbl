@@ -6,7 +6,7 @@ import DataTable from '../../../../../../components/DataTable/DataTable';
 /**
  * Normalize a DB row (snake_case) to the UI shape (camelCase)
  * Accepts rows from:
- *  - MySQL/Express API returning snake_case fields
+ *  - API returning snake_case fields
  *  - Or already normalized rows
  */
 const mapDbRowToUi = (r = {}) => {

@@ -1,6 +1,6 @@
 /**
  * Production-grade MongoDB Connection Manager
- * Drop-in replacement for the old mysql2 lib/database.js
+ * Shared MongoDB connection manager
  * Maintains same export interface (initialize, healthCheck, shutdown, getPoolStats)
  */
 
@@ -70,7 +70,7 @@ export const shutdown = async () => {
 };
 
 /**
- * Initialize - called at app startup (same interface as old MySQL initialize)
+ * Initialize - called at app startup
  */
 export const initialize = async () => {
   try {

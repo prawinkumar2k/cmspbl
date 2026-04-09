@@ -1,6 +1,6 @@
 /**
  * Student Attendance Controller (Student Portal View) — MongoDB version
- * Replaces student_attendance_view (MySQL VIEW) + student_attendance_entry JOIN
+ * Uses attendance collections and aggregation
  * with real-time MongoDB aggregation pipelines on StudentAttendance collection
  */
 import StudentAttendance from '../models/StudentAttendance.js';
@@ -117,3 +117,4 @@ export const getStudentAttendance = async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch attendance records' });
     }
 };
+

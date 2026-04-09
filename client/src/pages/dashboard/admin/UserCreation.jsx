@@ -41,7 +41,7 @@ const UserCreation = () => {
     // Fetch staff list
     fetch('/api/staff')
       .then(res => res.json())
-      .then(data => setStaffList(data))
+      .then(data => setStaffList(Array.isArray(data) ? data : []))
       .catch(() => {
         setStaffList([]);
         toast.error('Failed to load staff list');
@@ -50,7 +50,7 @@ const UserCreation = () => {
     // Fetch existing roles
     fetch('/api/roles')
       .then(res => res.json())
-      .then(data => setRoleList(data))
+      .then(data => setRoleList(Array.isArray(data) ? data : []))
       .catch(() => {
         setRoleList([]);
         toast.error('Failed to load roles');
@@ -60,9 +60,10 @@ const UserCreation = () => {
     fetch('/api/modules')
       .then(res => res.json())
       .then(data => {
-        setModuleList(data);
+        const moduleArray = Array.isArray(data) ? data : [];
+        setModuleList(moduleArray);
         // Group modules by category
-        const grouped = data.reduce((acc, module) => {
+        const grouped = moduleArray.reduce((acc, module) => {
           const category = module.module_category || 'Others';
           if (!acc[category]) {
             acc[category] = [];
@@ -90,8 +91,10 @@ const UserCreation = () => {
         }
       });
 
+      const userData = Array.isArray(response.data) ? response.data : [];
+
       // Add serial numbers
-      const usersWithSerial = response.data.map((user, index) => ({
+      const usersWithSerial = userData.map((user, index) => ({
         ...user,
         serial_no: index + 1
       }));
@@ -117,13 +120,14 @@ const UserCreation = () => {
     const { name, value } = e.target;
 
     if (name === 'staffName') {
-      const selectedStaff = staffList.find(staff => staff.staff_name === value);
+      const selectedStaff = staffList.find(staff => (staff.staffName || staff.staff_name) === value);
       if (selectedStaff) {
+        const id = selectedStaff.staffId || selectedStaff.staff_id || '';
         setForm(prev => ({
           ...prev,
           staffName: value,
-          staffId: selectedStaff.staff_id || '',
-          userId: selectedStaff.staff_id || ''
+          staffId: id,
+          userId: id
         }));
       }
     } else {
@@ -186,7 +190,6 @@ const UserCreation = () => {
     setForm(prev => {
       const newModules = { ...prev.accessModules };
       categoryModules.forEach(module => {
-        // delete newModules[module.module_key]; // Or set to false if you prefer explicit false
         newModules[module.module_key] = false;
       });
       return {
@@ -230,7 +233,6 @@ const UserCreation = () => {
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
 
-    // Validation
     if (!form.userRole) {
       toast.error('Please select or create a role');
       return;
@@ -246,12 +248,12 @@ const UserCreation = () => {
       return;
     }
 
-    if (!form.password) {
+    if (!editId && !form.password) {
       toast.error('Password is required');
       return;
     }
 
-    if (form.password.length < 6) {
+    if (form.password && form.password.length < 6) {
       toast.error('Password must be at least 6 characters');
       return;
     }
@@ -297,7 +299,6 @@ const UserCreation = () => {
         toast.success(editId ? 'User updated successfully!' : 'User created successfully!');
         setForm(INITIAL_FORM_STATE);
         setEditId(null);
-        // Always show table after save and refresh data
         setShowTable(true);
         fetchUsers();
       } else {
@@ -308,7 +309,7 @@ const UserCreation = () => {
       toast.dismiss();
       toast.error('Error saving user');
     }
-  }, [form, editId, showTable]);
+  }, [form, editId]);
 
   const handleReset = useCallback(() => {
     setForm(INITIAL_FORM_STATE);
@@ -318,45 +319,50 @@ const UserCreation = () => {
     toast.success('Form reset successfully!');
   }, []);
 
-  // Handle edit user
   const handleEdit = (user) => {
-    // Parse module_access
     let modules = {};
-    if (user.module_access) {
-      const moduleKeys = user.module_access.split(',');
-      moduleKeys.forEach(key => {
-        modules[key.trim()] = true;
-      });
+    const moduleAccess = user.moduleAccess || user.module_access;
+    if (moduleAccess) {
+      if (Array.isArray(moduleAccess)) {
+        moduleAccess.forEach(key => {
+          modules[key] = true;
+        });
+      } else {
+        const moduleKeys = typeof moduleAccess === 'string' ? moduleAccess.split(',') : [];
+        moduleKeys.forEach(key => {
+          modules[key.trim()] = true;
+        });
+      }
     }
 
     setForm({
       userRole: user.role || '',
-      staffName: user.staff_name || '',
-      staffId: user.staff_id || '',
+      staffName: user.staffName || user.staff_name || '',
+      staffId: user.staffId || user.staff_id || '',
       userId: user.username || '',
-      password: '', // Clear password for security - user must enter new password
+      password: '',
       confirmPassword: '',
       accessModules: modules
     });
-    setEditId(user.id);
+    setEditId(user._id || user.id);
     setShowTable(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
     toast.success(`Editing user: ${user.username}`);
   };
 
-  // Handle delete user
   const handleDelete = async (user) => {
+    const id = user._id || user.id;
     if (window.confirm(`Are you sure you want to delete user: ${user.username}?`)) {
       try {
         const token = localStorage.getItem('token');
-        await axios.delete(`/api/users/${user.id}`, {
+        await axios.delete(`/api/users/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
 
         toast.success('User deleted successfully');
-        if (editId === user.id) {
+        if (editId === id) {
           setForm(INITIAL_FORM_STATE);
           setEditId(null);
         }
@@ -368,7 +374,6 @@ const UserCreation = () => {
     }
   };
 
-  // Table columns
   const columns = [
     {
       accessorKey: 'serial_no',
@@ -386,14 +391,16 @@ const UserCreation = () => {
       )
     },
     {
-      accessorKey: 'staff_name',
+      accessorKey: 'staffName',
       header: 'Staff Name',
       size: 200,
+      cell: ({ row }) => row.original.staffName || row.original.staff_name || 'N/A'
     },
     {
-      accessorKey: 'staff_id',
+      accessorKey: 'staffId',
       header: 'Staff ID',
       size: 120,
+      cell: ({ row }) => row.original.staffId || row.original.staff_id || 'N/A'
     },
     {
       accessorKey: 'username',
@@ -401,16 +408,15 @@ const UserCreation = () => {
       size: 150,
     },
     {
-      accessorKey: 'module_access',
+      accessorKey: 'moduleAccess',
       header: 'Module Access',
       size: 150,
-      cell: ({ getValue }) => {
-        const access = getValue();
+      cell: ({ row }) => {
+        const access = row.original.moduleAccess || row.original.module_access;
         if (!access) return 'N/A';
-        const moduleKeys = access.split(',');
+        const moduleKeys = Array.isArray(access) ? access : (typeof access === 'string' ? access.split(',') : []);
         const count = moduleKeys.length;
 
-        // Get module names from keys
         const moduleNames = moduleKeys.map(key => {
           const module = moduleList.find(m => m.module_key === key.trim());
           return module ? module.module_name : key.trim();
@@ -443,12 +449,10 @@ const UserCreation = () => {
         <div className="dashboard-main">
           <Navbar />
           <div className="dashboard-main-body">
-            {/* Header */}
             <div className="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-4">
               <h6 className="fw-semibold mb-0">User Creation</h6>
             </div>
 
-            {/* Form Card */}
             <div className="card h-100 p-0 radius-12">
               <div className="card-header border-bottom bg-base py-16 px-24 d-flex align-items-center justify-content-between">
                 <div>
@@ -470,14 +474,12 @@ const UserCreation = () => {
               <div className="card-body p-24">
                 <form onSubmit={handleSubmit}>
                   <div className="row">
-                    {/* User Information Section */}
                     <div className="col-12">
                       <div className="mb-24">
                         <h6 className="text-lg fw-semibold mb-16 pb-8 border-bottom border-neutral-200">
                           User Information
                         </h6>
                         <div className="row g-20">
-                          {/* Role Selection or Creation */}
                           <div className="col-12 col-md-6">
                             <label className="form-label fw-semibold text-primary-light mb-8">
                               User Role <span className="text-danger">*</span>
@@ -493,7 +495,7 @@ const UserCreation = () => {
                                 >
                                   <option value="">Select Role</option>
                                   {roleList.map((role, index) => (
-                                    <option key={role.id || index} value={role.role}>{role.role}</option>
+                                    <option key={`${role._id || role.id || 'role'}-${index}`} value={role.role}>{role.role}</option>
                                   ))}
                                 </select>
                                 <button
@@ -537,7 +539,6 @@ const UserCreation = () => {
                             )}
                           </div>
 
-                          {/* Staff Name Selection */}
                           <div className="col-12 col-md-6">
                             <label className="form-label fw-semibold text-primary-light mb-8">
                               Staff Name <span className="text-danger">*</span>
@@ -550,15 +551,14 @@ const UserCreation = () => {
                               required
                             >
                               <option value="">Select Staff</option>
-                              {staffList.map(staff => (
-                                <option key={staff.staff_id} value={staff.staff_name}>
-                                  {staff.staff_name} ({staff.staff_id})
+                              {staffList.map((staff, index) => (
+                                <option key={`${staff.staffId || staff.staff_id || 'staff'}-${index}`} value={staff.staffName || staff.staff_name}>
+                                  {(staff.staffName || staff.staff_name)} ({(staff.staffId || staff.staff_id)})
                                 </option>
                               ))}
                             </select>
                           </div>
 
-                          {/* Staff ID (Auto-filled) */}
                           <div className="col-12 col-md-6">
                             <label className="form-label fw-semibold text-primary-light mb-8">
                               Staff ID
@@ -573,7 +573,6 @@ const UserCreation = () => {
                             />
                           </div>
 
-                          {/* User ID */}
                           <div className="col-12 col-md-6">
                             <label className="form-label fw-semibold text-primary-light mb-8">
                               User ID <span className="text-danger">*</span>
@@ -586,10 +585,10 @@ const UserCreation = () => {
                               className="form-control radius-8"
                               placeholder="Default: Staff ID"
                               required
+                              autoComplete="username"
                             />
                           </div>
 
-                          {/* Password */}
                           <div className="col-12 col-md-6">
                             <label className="form-label fw-semibold text-primary-light mb-8">
                               Password <span className="text-danger">*</span>
@@ -602,7 +601,7 @@ const UserCreation = () => {
                                 onChange={handleChange}
                                 className="form-control radius-8"
                                 placeholder="Enter password"
-                                required
+                                required={!editId}
                                 autoComplete="new-password"
                               />
                               <button
@@ -616,7 +615,6 @@ const UserCreation = () => {
                             </div>
                           </div>
 
-                          {/* Confirm Password */}
                           <div className="col-12 col-md-6">
                             <label className="form-label fw-semibold text-primary-light mb-8">
                               Confirm Password <span className="text-danger">*</span>
@@ -629,7 +627,7 @@ const UserCreation = () => {
                                 onChange={handleChange}
                                 className="form-control radius-8"
                                 placeholder="Re-enter password"
-                                required
+                                required={!editId}
                                 autoComplete="new-password"
                               />
                               <button
@@ -645,7 +643,6 @@ const UserCreation = () => {
                         </div>
                       </div>
 
-                      {/* Access Modules Section */}
                       <div className="mb-24">
                         <div className="d-flex align-items-center justify-content-between mb-20 pb-12 border-bottom border-neutral-200">
                           <div>
@@ -660,11 +657,7 @@ const UserCreation = () => {
                               type="button"
                               className="btn btn-sm btn-success px-16 py-8 d-flex align-items-center gap-2"
                               onClick={handleGlobalSelectAll}
-                              style={{
-                                borderRadius: '8px',
-                                fontWeight: '500',
-                                fontSize: '13px'
-                              }}
+                              style={{ borderRadius: '8px', fontWeight: '500', fontSize: '13px' }}
                             >
                               <i className="fas fa-check-circle"></i>
                               Select All
@@ -673,11 +666,7 @@ const UserCreation = () => {
                               type="button"
                               className="btn btn-sm btn-danger px-16 py-8 d-flex align-items-center gap-2"
                               onClick={handleGlobalDeselectAll}
-                              style={{
-                                borderRadius: '8px',
-                                fontWeight: '500',
-                                fontSize: '13px'
-                              }}
+                              style={{ borderRadius: '8px', fontWeight: '500', fontSize: '13px' }}
                             >
                               <i className="fas fa-times-circle"></i>
                               Clear All
@@ -685,13 +674,8 @@ const UserCreation = () => {
                           </div>
                         </div>
 
-                        <div className="module-list" style={{
-                          maxHeight: '600px',
-                          overflowY: 'auto',
-                          padding: '4px',
-                          scrollbarWidth: 'thin'
-                        }}>
-                          {Object.keys(groupedModules).map((category, categoryIndex) => {
+                        <div className="module-list" style={{ maxHeight: '600px', overflowY: 'auto', padding: '4px', scrollbarWidth: 'thin' }}>
+                          {Object.keys(groupedModules).map((category) => {
                             const categoryColors = {
                               'Common': { gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', icon: 'fa-home', bg: '#f0f4ff' },
                               'Admin': { gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', icon: 'fa-user-shield', bg: '#fff0f5' },
@@ -702,230 +686,48 @@ const UserCreation = () => {
                               'Examination': { gradient: 'linear-gradient(135deg, #86f3eeff 0%, #336deaff 100%)', icon: 'fa-clipboard-list', bg: '#f5fffa' },
                               'Admission': { gradient: 'linear-gradient(135deg, #ff9a9e 0%, #f888d5ff 100%)', icon: 'fa-chart-bar', bg: '#fff5f8' }
                             };
-
-                            const categoryStyle = categoryColors[category] || {
-                              gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                              icon: 'fa-layer-group',
-                              bg: '#f8f9fa'
-                            };
+                            const catStyle = categoryColors[category] || { gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', icon: 'fa-layer-group', bg: '#f8f9fa' };
 
                             return (
-                              <div key={category} className="mb-4" style={{
-                                backgroundColor: categoryStyle.bg,
-                                borderRadius: '12px',
-                                padding: '16px',
-                                border: '1px solid rgba(0,0,0,0.05)'
-                              }}>
-                                {/* Category Header */}
-                                <div className="d-flex align-items-center justify-content-between mb-3" style={{
-                                  background: categoryStyle.gradient,
-                                  borderRadius: '10px',
-                                  padding: '12px 16px',
-                                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
-                                }}>
+                              <div key={category} className="mb-4" style={{ backgroundColor: catStyle.bg, borderRadius: '12px', padding: '16px', border: '1px solid rgba(0,0,0,0.05)' }}>
+                                <div className="d-flex align-items-center justify-content-between mb-3" style={{ background: catStyle.gradient, borderRadius: '10px', padding: '12px 16px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
                                   <div className="d-flex align-items-center gap-3">
-                                    <div style={{
-                                      width: '40px',
-                                      height: '40px',
-                                      borderRadius: '10px',
-                                      backgroundColor: 'rgba(255,255,255,0.3)',
-                                      display: 'flex',
-                                      alignItems: 'center',
-                                      justifyContent: 'center',
-                                      backdropFilter: 'blur(10px)'
-                                    }}>
-                                      <i className={`fas ${categoryStyle.icon} text-white`} style={{ fontSize: '18px' }}></i>
+                                    <div style={{ width: '40px', height: '40px', borderRadius: '10px', backgroundColor: 'rgba(255,255,255,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(10px)' }}>
+                                      <i className={`fas ${catStyle.icon} text-white`} style={{ fontSize: '18px' }}></i>
                                     </div>
                                     <div>
-                                      <h6 className="mb-0 text-white fw-bold" style={{
-                                        fontSize: '16px',
-                                        letterSpacing: '0.3px',
-                                        textShadow: '0 2px 4px rgba(0,0,0,0.1)'
-                                      }}>
-                                        {category} Modules
-                                      </h6>
-                                      <small className="text-white" style={{ opacity: 0.9, fontSize: '11px' }}>
-                                        {groupedModules[category].length} module{groupedModules[category].length !== 1 ? 's' : ''} available
-                                      </small>
+                                      <h6 className="mb-0 text-white fw-bold" style={{ fontSize: '16px', letterSpacing: '0.3px' }}>{category} Modules</h6>
                                     </div>
                                   </div>
                                   <div className="d-flex gap-2">
-                                    <button
-                                      type="button"
-                                      className="btn btn-sm px-3 py-2"
-                                      style={{
-                                        fontSize: '11px',
-                                        fontWeight: '600',
-                                        borderRadius: '6px',
-                                        backgroundColor: 'rgba(255,255,255,0.25)',
-                                        color: 'white',
-                                        border: '1px solid rgba(255,255,255,0.3)',
-                                        backdropFilter: 'blur(10px)',
-                                        transition: 'all 0.3s ease'
-                                      }}
-                                      onClick={() => handleCategorySelectAll(category)}
-                                      onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.4)'}
-                                      onMouseLeave={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.25)'}
-                                      title={`Select all ${category} modules`}
-                                    >
-                                      <i className="fas fa-check-double me-1"></i>
-                                      Select All
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className="btn btn-sm px-3 py-2"
-                                      style={{
-                                        fontSize: '11px',
-                                        fontWeight: '600',
-                                        borderRadius: '6px',
-                                        backgroundColor: 'rgba(255,255,255,0.25)',
-                                        color: 'white',
-                                        border: '1px solid rgba(255,255,255,0.3)',
-                                        backdropFilter: 'blur(10px)',
-                                        transition: 'all 0.3s ease'
-                                      }}
-                                      onClick={() => handleCategoryDeselectAll(category)}
-                                      onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.4)'}
-                                      onMouseLeave={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.25)'}
-                                      title={`Deselect all ${category} modules`}
-                                    >
-                                      <i className="fas fa-times me-1"></i>
-                                      Clear
-                                    </button>
+                                    <button type="button" className="btn btn-sm px-3 py-2" style={{ fontSize: '11px', fontWeight: '600', borderRadius: '6px', backgroundColor: 'rgba(255,255,255,0.25)', color: 'white', border: '1px solid rgba(255,255,255,0.3)' }} onClick={() => handleCategorySelectAll(category)}>Select All</button>
+                                    <button type="button" className="btn btn-sm px-3 py-2" style={{ fontSize: '11px', fontWeight: '600', borderRadius: '6px', backgroundColor: 'rgba(255,255,255,0.25)', color: 'white', border: '1px solid rgba(255,255,255,0.3)' }} onClick={() => handleCategoryDeselectAll(category)}>Clear</button>
                                   </div>
                                 </div>
-
-                                {/* Category Modules */}
                                 <div className="row g-3">
                                   {groupedModules[category].map(module => (
-                                    <div key={module.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
+                                    <div key={module._id || module.id || module.module_key} className="col-12 col-sm-6 col-md-4 col-lg-3">
                                       <div
                                         className={`module-card ${form.accessModules[module.module_key] ? 'selected' : ''}`}
                                         style={{
                                           cursor: 'pointer',
-                                          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                                          transition: 'all 0.3s ease',
                                           borderRadius: '10px',
                                           padding: '14px',
-                                          backgroundColor: form.accessModules[module.module_key]
-                                            ? 'white'
-                                            : 'rgba(255,255,255,0.7)',
-                                          border: form.accessModules[module.module_key]
-                                            ? '2px solid #0d6efd'
-                                            : '2px solid rgba(0,0,0,0.08)',
-                                          boxShadow: form.accessModules[module.module_key]
-                                            ? '0 8px 20px rgba(13, 110, 253, 0.25), 0 0 0 4px rgba(13, 110, 253, 0.1)'
-                                            : '0 2px 8px rgba(0,0,0,0.04)',
-                                          transform: form.accessModules[module.module_key] ? 'translateY(-2px)' : 'translateY(0)',
-                                          position: 'relative',
-                                          overflow: 'hidden'
+                                          backgroundColor: form.accessModules[module.module_key] ? 'white' : 'rgba(255,255,255,0.7)',
+                                          border: form.accessModules[module.module_key] ? '2px solid #0d6efd' : '2px solid rgba(0,0,0,0.08)',
+                                          boxShadow: form.accessModules[module.module_key] ? '0 8px 20px rgba(13, 110, 253, 0.25)' : '0 2px 8px rgba(0,0,0,0.04)',
+                                          position: 'relative'
                                         }}
                                         onClick={() => handleModuleToggle(module.module_key)}
-                                        onMouseEnter={(e) => {
-                                          if (!form.accessModules[module.module_key]) {
-                                            e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-                                            e.currentTarget.style.transform = 'translateY(-2px)';
-                                            e.currentTarget.style.borderColor = 'rgba(13, 110, 253, 0.3)';
-                                          }
-                                        }}
-                                        onMouseLeave={(e) => {
-                                          if (!form.accessModules[module.module_key]) {
-                                            e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)';
-                                            e.currentTarget.style.transform = 'translateY(0)';
-                                            e.currentTarget.style.borderColor = 'rgba(0,0,0,0.08)';
-                                          }
-                                        }}
                                       >
-                                        {/* Selection indicator */}
-                                        {form.accessModules[module.module_key] && (
-                                          <div style={{
-                                            position: 'absolute',
-                                            top: 0,
-                                            right: 0,
-                                            width: '0',
-                                            height: '0',
-                                            borderStyle: 'solid',
-                                            borderWidth: '0 40px 40px 0',
-                                            borderColor: 'transparent #0d6efd transparent transparent'
-                                          }}>
-                                            <i className="fas fa-check" style={{
-                                              position: 'absolute',
-                                              top: '4px',
-                                              right: '-36px',
-                                              color: 'white',
-                                              fontSize: '10px'
-                                            }}></i>
+                                        <div className="d-flex align-items-center gap-2">
+                                          <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: form.accessModules[module.module_key] ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#f5f7fa', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                            <i className="fas fa-cube" style={{ color: form.accessModules[module.module_key] ? 'white' : '#6c757d' }}></i>
                                           </div>
-                                        )}
-
-                                        <div className="d-flex align-items-center justify-content-between">
-                                          <div className="d-flex align-items-center gap-2 flex-grow-1">
-                                            <div
-                                              style={{
-                                                width: '42px',
-                                                height: '42px',
-                                                minWidth: '42px',
-                                                borderRadius: '10px',
-                                                background: form.accessModules[module.module_key]
-                                                  ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-                                                  : 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                transition: 'all 0.3s ease',
-                                                boxShadow: form.accessModules[module.module_key]
-                                                  ? '0 4px 12px rgba(102, 126, 234, 0.4)'
-                                                  : 'none'
-                                              }}
-                                            >
-                                              <i className="fas fa-cube" style={{
-                                                fontSize: '18px',
-                                                color: form.accessModules[module.module_key] ? 'white' : '#6c757d'
-                                              }}></i>
-                                            </div>
-                                            <div className="flex-grow-1" style={{ minWidth: 0 }}>
-                                              <label
-                                                className="mb-0 d-block"
-                                                style={{
-                                                  cursor: 'pointer',
-                                                  fontSize: '13px',
-                                                  fontWeight: '600',
-                                                  lineHeight: '1.4',
-                                                  userSelect: 'none',
-                                                  color: form.accessModules[module.module_key] ? '#0d6efd' : '#2c3e50',
-                                                  overflow: 'hidden',
-                                                  textOverflow: 'ellipsis',
-                                                  whiteSpace: 'nowrap'
-                                                }}
-                                                title={module.module_name}
-                                              >
-                                                {module.module_name}
-                                              </label>
-                                              <small style={{
-                                                fontSize: '10px',
-                                                color: '#6c757d',
-                                                fontWeight: '500'
-                                              }}>
-                                                {module.module_key}
-                                              </small>
-                                            </div>
-                                          </div>
-                                          <div className="form-check form-switch m-0" style={{ paddingLeft: 0 }}>
-                                            <input
-                                              type="checkbox"
-                                              className="form-check-input m-0"
-                                              checked={form.accessModules[module.module_key] || false}
-                                              onChange={(e) => {
-                                                e.stopPropagation();
-                                                handleModuleToggle(module.module_key);
-                                              }}
-                                              style={{
-                                                cursor: 'pointer',
-                                                width: '40px',
-                                                height: '20px',
-                                                backgroundColor: form.accessModules[module.module_key] ? '#0d6efd' : '#dee2e6',
-                                                borderColor: form.accessModules[module.module_key] ? '#0d6efd' : '#dee2e6'
-                                              }}
-                                            />
+                                          <div>
+                                            <label className="mb-0 fw-bold" style={{ fontSize: '13px' }}>{module.module_name}</label>
+                                            <div className="text-xs text-muted">{module.module_key}</div>
                                           </div>
                                         </div>
                                       </div>
@@ -938,21 +740,9 @@ const UserCreation = () => {
                         </div>
                       </div>
 
-                      {/* Action Buttons */}
                       <div className="d-flex justify-content-end gap-3 mt-4">
-                        <button
-                          type="button"
-                          className="btn btn-outline-danger px-20 py-11"
-                          onClick={handleReset}
-                        >
-                          Reset
-                        </button>
-                        <button
-                          type="submit"
-                          className="btn btn-outline-success px-20 py-11"
-                        >
-                          {editId ? 'Update User' : 'Create User'}
-                        </button>
+                        <button type="button" className="btn btn-outline-danger px-20 py-11" onClick={handleReset}>Reset</button>
+                        <button type="submit" className="btn btn-success px-20 py-11 text-white">{editId ? 'Update User' : 'Create User'}</button>
                       </div>
                     </div>
                   </div>
@@ -960,7 +750,6 @@ const UserCreation = () => {
               </div>
             </div>
 
-            {/* Users Table */}
             {showTable && (
               <div className="card basic-data-table mt-4">
                 <div className="card-header">

@@ -1,6 +1,6 @@
 /**
  * User Controller — MongoDB version
- * Replaces all MySQL db.query() with Mongoose operations
+ * Uses Mongoose operations throughout
  */
 
 import bcrypt from 'bcryptjs';
@@ -8,6 +8,16 @@ import User from '../models/User.js';
 import Role from '../models/Role.js';
 import SidebarModule from '../models/SidebarModule.js';
 import Staff from '../models/Staff.js';
+
+const serializeSidebarModule = (module) => ({
+  id: module.id || module._id?.toString?.() || module.Id || null,
+  module_name: module.module_name ?? module.moduleName ?? '',
+  module_key: module.module_key ?? module.moduleKey ?? '',
+  module_category: module.module_category ?? module.moduleCategory ?? '',
+  module_path: module.module_path ?? module.modulePath ?? '',
+  display_order: module.display_order ?? module.displayOrder ?? 999,
+  is_active: module.is_active ?? module.isActive ?? true,
+});
 
 // ── Get all roles ─────────────────────────────────────────────────────────────
 
@@ -55,8 +65,9 @@ export const createRole = async (req, res) => {
 export const getModules = async (req, res) => {
   try {
     const modules = await SidebarModule.find({ isActive: true })
-      .select('moduleName moduleKey moduleCategory isActive');
-    res.json(modules);
+      .sort({ displayOrder: 1, moduleCategory: 1 })
+      .lean();
+    res.json(modules.map(serializeSidebarModule));
   } catch (error) {
     console.error('Error fetching modules:', error);
     res.status(500).json({ error: 'Failed to fetch modules' });
@@ -204,3 +215,4 @@ export const deleteUser = async (req, res) => {
     res.status(500).json({ error: 'Failed to delete user' });
   }
 };
+

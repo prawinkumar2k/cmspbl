@@ -55,25 +55,25 @@ const Branch = () => {
     // Fetch course names from backend
     fetch('/api/branch/course-names')
       .then(res => res.json())
-      .then(data => setCourseNames(data))
+      .then(data => setCourseNames(Array.isArray(data) ? data : []))
       .catch(() => setCourseNames([]));
 
     // Fetch institution types from backend
     fetch('/api/branch/institution-types')
       .then(res => res.json())
-      .then(data => setInstitutionTypes(data))
+      .then(data => setInstitutionTypes(Array.isArray(data) ? data : []))
       .catch(() => setInstitutionTypes([]));
 
     // Fetch course mode from backend
     fetch('/api/branch/course-mode')
       .then(res => res.json())
-      .then(data => setCourseMode(data))
+      .then(data => setCourseMode(Array.isArray(data) ? data : []))
       .catch(() => setCourseMode([]));
 
     // Fetch regulations from backend
     fetch('/api/branch/regulations')
       .then(res => res.json())
-      .then(data => setRegulations(data))
+      .then(data => setRegulations(Array.isArray(data) ? data : []))
       .catch(() => setRegulations([]));
   }, []);
 

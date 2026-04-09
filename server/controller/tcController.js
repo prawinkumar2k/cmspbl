@@ -12,7 +12,7 @@ export const getTCByRegNo = async (req, res) => {
     const s = await Student.findOne({ registerNumber: regNo });
     if (!s) return res.status(404).json({ error: 'Student not found' });
 
-    // Map to old MySQL field names so frontend stays unchanged
+    // Map to legacy field names so frontend stays unchanged
     res.json({
       reg_no: s.registerNumber,
       name: s.studentName,
@@ -90,7 +90,7 @@ export const updateTC = async (req, res) => {
 
 export const getAllTC = async (req, res) => {
   try {
-    // ✅ $exists:true + $ne:'' replaces MySQL: WHERE tc_no IS NOT NULL AND tc_no != ''
+    // Return only students that already have a transfer certificate number.
     const students = await Student.find({ tcNo: { $exists: true, $ne: null, $ne: '' } });
     res.json(students);
   } catch (err) {
@@ -100,3 +100,4 @@ export const getAllTC = async (req, res) => {
 };
 
 export const saveTC = updateTC;
+

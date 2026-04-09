@@ -16,7 +16,7 @@
     "test:coverage": "npm test -- --coverage",
     "health": "curl -f http://localhost:5000/health || exit 1",
     "mongo:migrate": "node scripts/migrateToMongo.js",
-    "mongo:export": "python scripts/exportMysql.py"
+    "mongo:export": "echo Legacy database export removed for MongoDB-only runtime"
   },
   "keywords": [
     "erp",

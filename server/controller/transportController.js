@@ -434,7 +434,7 @@ export const saveAllTransportMaster = async (req, res) => {
     ]);
 
     // Note: This logic might fail if references (ObjectIds) are not preserved.
-    // However, the original MySQL code was also truncating and inserting fresh.
+    // The legacy implementation also recreated records from scratch.
     // If the frontend sends ObjectIds, we might need to cast them.
 
     await Vehicle.insertMany(vehicles.map(v => ({ ...v, vehicleNumber: v.vehicle_number })));
@@ -474,3 +474,4 @@ export const importTransportData = async (req, res) => {
     return res.status(500).json({ success: false, message: "Failed to import transport data" });
   }
 };
+

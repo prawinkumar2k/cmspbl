@@ -255,7 +255,7 @@ const PracticalMark = () => {
       if (name === 'practicalNo') {
         const selectedPractical = practicals.find(p => p.testNo === parseInt(value));
         if (selectedPractical) {
-          // Format date as YYYY-MM-DD for MySQL
+      // Format date as YYYY-MM-DD
           if (selectedPractical.assessmentDate) {
             const date = new Date(selectedPractical.assessmentDate);
             const year = date.getFullYear();

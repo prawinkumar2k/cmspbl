@@ -37,6 +37,16 @@ const INITIAL_FORM_STATE = {
   others: ''
 };
 
+const STAFF_IMAGE_PLACEHOLDER =
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
+      <rect width="100" height="100" rx="12" fill="#e5e7eb"/>
+      <circle cx="50" cy="38" r="18" fill="#9ca3af"/>
+      <path d="M22 84c4-15 16-24 28-24s24 9 28 24" fill="#9ca3af"/>
+    </svg>
+  `);
+
 const StaffDetails = () => {
   const [form, setForm] = useState(INITIAL_FORM_STATE);
   const [photoLabel, setPhotoLabel] = useState('Image Not Available');
@@ -55,6 +65,13 @@ const StaffDetails = () => {
 
   const [photoFile, setPhotoFile] = useState(null);
   const [editId, setEditId] = useState(null); // Track editing staff
+
+  const getPhotoSrc = useCallback((photoName) => {
+    if (!photoName || photoName === 'Image Not Available') {
+      return STAFF_IMAGE_PLACEHOLDER;
+    }
+    return `/api/staff/staff-image/${photoName}`;
+  }, []);
 
   const handleChange = useCallback((e) => {
     const { name, value, type, checked } = e.target;
@@ -473,8 +490,8 @@ const StaffDetails = () => {
                             className="form-select radius-8"
                           >
                             <option value="">Select Designation</option>
-                            {designationList.map(d => (
-                              <option key={d.id} value={d.Designation}>{d.Designation}</option>
+                            {designationList.map((d, index) => (
+                              <option key={`${d.id ?? d.Designation}-${index}`} value={d.Designation}>{d.Designation}</option>
                             ))}
                           </select>
                         </div>
@@ -522,7 +539,7 @@ const StaffDetails = () => {
                           >
                             <option value="">Select Section</option>
                             {courseList.map((course, idx) => (
-                              <option key={idx} value={course}>{course}</option>
+                              <option key={`${course}-${idx}`} value={course}>{course}</option>
                             ))}
                           </select>
                         </div>
@@ -540,7 +557,7 @@ const StaffDetails = () => {
                           >
                             <option value="">Select Department</option>
                             {filteredDepartmentList.map((d, idx) => (
-                              <option key={idx} value={d.Dept_Name}>{d.Dept_Name}</option>
+                              <option key={`${d.id ?? d.Dept_Code ?? d.Dept_Name}-${idx}`} value={d.Dept_Name}>{d.Dept_Name}</option>
                             ))}
                           </select>
                         </div>
@@ -637,11 +654,14 @@ const StaffDetails = () => {
                                 />
                               ) : (
                                 <img
-                                  src={`/api/staff/staff-image/${photoLabel}`}
+                                  src={getPhotoSrc(photoLabel)}
                                   alt="Staff"
                                   className="mb-8 radius-8"
                                   style={{ width: 100, height: 100, objectFit: 'cover' }}
-                                  onError={(e) => { e.target.src = '/api/staff/staff-image/staff.png'; }}
+                                  onError={(e) => {
+                                    e.currentTarget.onerror = null;
+                                    e.currentTarget.src = STAFF_IMAGE_PLACEHOLDER;
+                                  }}
                                 />
                               )}
                               <p className="text-sm text-neutral-500 mb-8">{photoLabel}</p>
@@ -683,8 +703,8 @@ const StaffDetails = () => {
                             className="form-select radius-8"
                           >
                             <option value="">Select Religion</option>
-                            {religionList.map(r => (
-                              <option key={r.id} value={r.Religion}>{r.Religion}</option>
+                            {religionList.map((r, index) => (
+                              <option key={`${r.id ?? r.Religion}-${index}`} value={r.Religion}>{r.Religion}</option>
                             ))}
                           </select>
                         </div>
@@ -700,8 +720,8 @@ const StaffDetails = () => {
                             className="form-select radius-8"
                           >
                             <option value="">Select Community</option>
-                            {communityList.map(c => (
-                              <option key={c.id} value={c.Community}>{c.Community}</option>
+                            {communityList.map((c, index) => (
+                              <option key={`${c.id ?? c.Community}-${index}`} value={c.Community}>{c.Community}</option>
                             ))}
                           </select>
                         </div>

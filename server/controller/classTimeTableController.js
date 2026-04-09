@@ -101,7 +101,7 @@ export const saveTimetable = async (req, res) => {
   try {
     const { course, deptCode, deptName, semester, year, regulation, className, timetableData } = req.body;
 
-    // ✅ Delete & re-insert pattern (replaces MySQL DELETE + INSERT loop)
+    // Replace the matching timetable rows before inserting the new payload.
     await ClassTimetable.deleteMany({
       courseName: course, deptCode, semester, year, regulation, classSection: className
     });
@@ -160,3 +160,4 @@ export const updateTimetableCell = async (req, res) => {
     res.json({ message: 'Timetable cell updated successfully' });
   } catch (err) { res.status(500).json({ error: err.message }); }
 };
+

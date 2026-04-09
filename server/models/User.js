@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
     staffId: { type: String, required: true, unique: true, index: true },
     username: { type: String, required: true, unique: true, index: true },
     password: { type: String, required: true },
-    // ✅ Array replaces comma-separated string stored in MySQL module_access column
+    // Array of allowed sidebar module keys
     moduleAccess: { type: [String], default: [] },
 }, { timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } });
 

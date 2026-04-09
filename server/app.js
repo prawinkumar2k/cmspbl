@@ -74,7 +74,6 @@ import incomeExpenseMasterRoutes from './routes/incomeExpenseMaster.js';
 import hrLeaveRoutes from './routes/hrLeave.js';
 import hrAttendanceRoutes from './routes/hrAttendance.js';
 import hrPayrollRoutes from './routes/hrPayroll.js';
-import staffMasterRoutes from './routes/staffMaster.js';
 
 // Academic / Attendance Configuration Routes
 import attendanceConfigRoutes from './routes/attendanceConfig.js';
@@ -83,11 +82,8 @@ import markedAttRoutes from './routes/markedAtt.js';
 import attReportRoutes from './routes/attReportRoutes.js';
 import assConfigRoutes from './routes/assConfig.js';
 import assignmentMarkRoutes from './routes/AssignmentMark.js';
-import assignmentReportRoutes from './routes/assignmentReport.js';
 import unitTestRoutes from './routes/unitTest.js';
-import unitTestReportRoutes from './routes/unitTestReport.js';
-import practicalMarksRoutes from './routes/practicalRoutes.js';
-import practicalReportRoutes from './routes/practicalReport.js';
+import practicalMarksRoutes from './routes/practicalMarks.js';
 import UNIVMarkEntryRoutes from './routes/UNIVMarkEntryRoutes.js';
 
 // Examination Routes
@@ -98,7 +94,6 @@ import strengthListRoutes from './routes/strengthlist.js';
 import checklistRoutes from './routes/checklist.js';
 import examGenerationRoutes from './routes/examGeneration.js';
 import practicalPanelRoutes from './routes/practicalPanel.js';
-import editExamProcessRoutes from './routes/EditExamProcessRoutes.js';
 import practicalTimetableRoutes from './routes/Practicaltimetable.js';
 import seatAllocationRoutes from './routes/seatAllocation.js';
 import daywarStatementRoutes from './routes/daywarStatement.js';
@@ -128,7 +123,6 @@ import userRoutes from './routes/userroutes.js';
 import studentEnquiryRoutes from './routes/studentEnquiry.js';
 import applicationIssueRoutes from './routes/applicationIssue.js';
 import admittedStudentRoutes from './routes/admittedStudent.js';
-import studentPhotoRoutes from './routes/studentPhoto.js';
 import quotaAllocationRoutes from './routes/quotaAllocation.js';
 import assignCallRoutes from './routes/assignCallRouter.js';
 import leadManagementRoutes from './routes/leadManagement.js';
@@ -139,7 +133,7 @@ import enquiryRoutes from './routes/enquiryRoutes.js';
 import courseDetailsRoutes from './routes/courseDetails.js';
 
 // Certificates / TC Routes
-import editTCRoutes from './routes/editTC.js';
+import tcRoutes from './routes/tc.js';
 
 // Dashboard Routes
 import dashboardRoutes from './routes/dashboard.js';
@@ -148,26 +142,10 @@ import dashboardRoutes from './routes/dashboard.js';
 import studentLoginRoutes from './routes/studentloginRoutes.js';
 import studentPortalRoutes from './routes/studentPortal.js';
 
-// Library Management Routes
-import bookRoutes from './routes/book.js';
-import bookIssueRoutes from './routes/bookIssue.js';
-import bookIssueReportRoutes from './routes/bookIssueReport.js';
-import dueDateExitReportRoutes from './routes/dueDateExitReport.js';
-import fineRoutes from './routes/fine.js';
-import fineReportRoutes from './routes/fineReport.js';
-import noDueCertificateRoutes from './routes/noDueCertificate.js';
-import borrowerRoutes from './routes/borrower.js';
-import currentBorrowersRoutes from './routes/currentBorrowers.js';
-import currentBorrowerReportRoutes from './routes/currentBorrowerReport.js';
-import bookReturnRoutes from './routes/bookReturn.js';
-import bookRenewalRoutes from './routes/bookRenewal.js';
-import availableBooksRoutes from './routes/availableBooks.js';
-import bookHistoryRoutes from './routes/bookHistory.js';
-import updateBookRoutes from './routes/updateBook.js';
-
-// Memo Routes
-import memoRoutes from './routes/memoRoutes.js';
-import studentMemoRoutes from './routes/studentMemoRoutes.js';
+// Additional Existing Module Routes
+import dbSemesterRoutes from './routes/dbSemester.js';
+import placementRoutes from './routes/placementRoutes.js';
+import consolidateReportRoutes from './routes/consolidateReportRoutes.js';
 
 // ============================================
 // Initialize Application
@@ -201,7 +179,18 @@ app.use(helmet({
 
 // CORS configuration
 app.use(cors({
-  origin: config.cors.origins,
+  origin: (origin, callback) => {
+    if (!origin) {
+      return callback(null, true);
+    }
+
+    if (!config.cors.origins.length || config.cors.origins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    logger.warn('Blocked by CORS policy', { origin });
+    return callback(new Error(`Origin ${origin} not allowed by CORS`));
+  },
   methods: config.cors.methods,
   allowedHeaders: config.cors.allowedHeaders,
   exposedHeaders: config.cors.exposedHeaders,
@@ -253,6 +242,7 @@ app.use('/api/courseMaster', courseMasterRoutes);
 app.use('/api/academicYearMaster', academicYearMasterRoutes);
 app.use('/api/regulationMaster', regulationMasterRoutes);
 app.use('/api/semesterMaster', semesterMasterRoutes);
+app.use('/api/dbSemester', dbSemesterRoutes);
 app.use('/api/feeMaster', feeMasterRoutes);
 app.use('/api/designationMaster', designationMasterRoutes);
 app.use('/api/studentMaster', studentMasterRoutes);
@@ -280,7 +270,6 @@ app.use('/api/income-expense-master', incomeExpenseMasterRoutes);
 app.use('/api/hr', hrLeaveRoutes);
 app.use('/api/hr/attendance', hrAttendanceRoutes);
 app.use('/api/hr/payroll', hrPayrollRoutes);
-app.use('/api/staff_master', staffMasterRoutes);
 
 // Academic / Attendance Configuration Routes
 app.use('/api/attendanceConfig', attendanceConfigRoutes);
@@ -289,11 +278,8 @@ app.use('/api/markedAttendance', markedAttRoutes);
 app.use('/api/attendanceReport', attReportRoutes);
 app.use('/api/assConfig', assConfigRoutes);
 app.use('/api/assignmentMark', assignmentMarkRoutes);
-app.use('/api/assignmentReport', assignmentReportRoutes);
 app.use('/api/unitTest', unitTestRoutes);
-app.use('/api/unitTestReport', unitTestReportRoutes);
 app.use('/api/practicalMarks', practicalMarksRoutes);
-app.use('/api/practicalReport', practicalReportRoutes);
 app.use('/api/UNIVMarkEntry', UNIVMarkEntryRoutes);
 
 // Examination Routes
@@ -305,7 +291,6 @@ app.use('/api/checklist', checklistRoutes);
 app.use('/api/examGeneration', examGenerationRoutes);
 app.use('/api/examSeatAllocation', examGenerationRoutes);
 app.use('/api/practical-panel', practicalPanelRoutes);
-app.use('/api/editExamProcess', editExamProcessRoutes);
 app.use('/api/practicalTimetable', practicalTimetableRoutes);
 app.use('/api/seatAllocation', seatAllocationRoutes);
 app.use('/api/daywarStatement', daywarStatementRoutes);
@@ -329,7 +314,6 @@ app.use('/api', userRoutes);
 app.use('/api/studentEnquiry', studentEnquiryRoutes);
 app.use('/api/applicationIssue', applicationIssueRoutes);
 app.use('/api/admittedStudent', admittedStudentRoutes);
-app.use('/api/studentPhoto', studentPhotoRoutes);
 app.use('/api/quotaAllocation', quotaAllocationRoutes);
 app.use('/api/assignCall', assignCallRoutes);
 app.use('/api/leadManagement', leadManagementRoutes);
@@ -338,7 +322,7 @@ app.use('/api/enquiry', enquiryRoutes);
 
 // Course Details & Certificates Routes
 app.use('/api/courseDetails', courseDetailsRoutes);
-app.use('/api/tc', editTCRoutes);
+app.use('/api/tc', tcRoutes);
 
 // Dashboard Routes
 app.use('/api/dashboard', dashboardRoutes);
@@ -346,27 +330,8 @@ app.use('/api/dashboard', dashboardRoutes);
 // Student Login Routes
 app.use('/api/student-login', studentLoginRoutes);
 app.use('/api/student-portal', studentPortalRoutes);
-
-// Library Management Routes
-app.use('/api/book', bookRoutes);
-app.use('/api/fine', fineRoutes);
-app.use('/api/fineReport', fineReportRoutes);
-app.use('/api/book-issue-report', bookIssueReportRoutes);
-app.use('/api/book-issue', bookIssueRoutes);
-app.use('/api/dueDateExitReport', dueDateExitReportRoutes);
-app.use('/api/no-due-certificate', noDueCertificateRoutes);
-app.use('/api/book-return', bookReturnRoutes);
-app.use('/api/book-renewal', bookRenewalRoutes);
-app.use('/api/borrowers', borrowerRoutes);
-app.use('/api/current-borrowers', currentBorrowersRoutes);
-app.use('/api/current-borrower-report', currentBorrowerReportRoutes);
-app.use('/api/available-books', availableBooksRoutes);
-app.use('/api/book-history', bookHistoryRoutes);
-app.use('/api/book-history/update', updateBookRoutes);
-
-// Memo Routes
-app.use('/api/memo', memoRoutes);
-app.use('/api/studentMemo', studentMemoRoutes);
+app.use('/api/placement', placementRoutes);
+app.use('/api/consolidateReport', consolidateReportRoutes);
 
 // ============================================
 // Static File Serving
@@ -422,6 +387,7 @@ const startServer = async () => {
 
     // Start HTTP server
     const server = app.listen(config.server.port, config.server.host, () => {
+      console.log(`Server running on port ${config.server.port}`);
       logger.info('Server started', {
         port: config.server.port,
         host: config.server.host,

@@ -1,6 +1,6 @@
 /**
  * Staff Details Controller — MongoDB version
- * Replaces staff_master MySQL table with Staff Mongoose model
+ * Uses the Staff Mongoose model
  */
 
 import path from 'path';
@@ -38,7 +38,7 @@ export const getAllCommunities = async (req, res) => {
 export const getAllDept_Names = async (req, res) => {
   try {
     const courses = await Course.find().select('deptName deptCode courseName').sort({ deptName: 1 });
-    // Return in old MySQL field name format so frontend stays unchanged
+    // Return the legacy field names the frontend already consumes.
     res.json(courses.map(c => ({ Dept_Name: c.deptName, Dept_Code: c.deptCode, Course_Name: c.courseName })));
   } catch (err) { res.status(500).json({ error: 'Failed to fetch Dept_Names' }); }
 };
@@ -202,3 +202,4 @@ export const getStaffImage = async (req, res) => {
     res.status(500).json({ error: 'Failed to serve image' });
   }
 };
+

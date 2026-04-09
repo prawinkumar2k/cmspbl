@@ -46,7 +46,7 @@ export const getLogsByDateRange = async (req, res) => {
     const { startDate, endDate } = req.query;
     if (!startDate || !endDate) return res.status(400).json({ error: 'Start date and end date are required' });
 
-    // ✅ MongoDB: $gte/$lte instead of MySQL BETWEEN
+    // ✅ MongoDB date-range filtering
     const logs = await ActivityLog.find({
       timestamp: { $gte: new Date(startDate), $lte: new Date(endDate + 'T23:59:59.999Z') }
     }).sort({ timestamp: -1 });
@@ -74,7 +74,7 @@ export const deleteOldLogs = async (req, res) => {
     const { daysOld } = req.query;
     if (!daysOld || isNaN(daysOld)) return res.status(400).json({ error: 'Please provide valid number of days' });
 
-    // ✅ MongoDB: $lt new Date instead of MySQL DATE_SUB(NOW(), INTERVAL ? DAY)
+    // ✅ MongoDB relative-date filtering
     const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() - parseInt(daysOld));
 
@@ -88,3 +88,4 @@ export const deleteOldLogs = async (req, res) => {
 };
 
 export default { getAllLogs, getUserLogs, getLogsByDateRange, getRecentLogins, deleteOldLogs };
+

@@ -1,6 +1,6 @@
 /**
  * MongoDB Connection - Production Grade
- * Replaces mysql2/promise pool
+ * MongoDB connection manager
  */
 
 import mongoose from 'mongoose';
@@ -18,7 +18,7 @@ const connectDB = async () => {
     const conn = await mongoose.connect(process.env.MONGO_URI, {
       serverSelectionTimeoutMS: 10000,  // Fail fast if server unreachable
       socketTimeoutMS: 45000,
-      maxPoolSize: 100,                 // Match your old MySQL pool size
+      maxPoolSize: 100,
       minPoolSize: 5,
       connectTimeoutMS: 10000,
     });

@@ -1,15 +1,15 @@
-/**
- * Branch Controller — MongoDB version
- * Replaces course_details MySQL table with Course Mongoose model
- */
-
 import Course from '../models/Course.js';
 
 // ── Get all branches (courses) ────────────────────────────────────────────────
 
 export const getBranches = async (req, res) => {
   try {
-    const courses = await Course.find().sort({ deptOrder: 1, deptName: 1 });
+    const { courseName } = req.query;
+    const query = {};
+    if (courseName) {
+      query.courseName = courseName;
+    }
+    const courses = await Course.find(query).sort({ deptOrder: 1, deptName: 1 });
     res.json(courses);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -62,7 +62,7 @@ export const editBranch = async (req, res) => {
     const id = req.params.id;
     const body = req.body;
 
-    // Map incoming fields to Mongoose field names
+    // Map incoming legacy field names to Mongoose field names
     const updateData = {};
     const fieldMap = {
       Course_Mode: 'courseMode', Dept_Code: 'deptCode', Dept_Name: 'deptName',
@@ -75,9 +75,9 @@ export const editBranch = async (req, res) => {
       Other: 'other', GoiQuota: 'goiQuota', MgtQuota: 'mgtQuota', Ins_Type: 'insType',
     };
 
-    for (const [mysqlField, mongoField] of Object.entries(fieldMap)) {
-      if (body[mysqlField] !== undefined) {
-        updateData[mongoField] = body[mysqlField];
+    for (const [legacyField, mongoField] of Object.entries(fieldMap)) {
+      if (body[legacyField] !== undefined) {
+        updateData[mongoField] = body[legacyField];
       }
     }
 
